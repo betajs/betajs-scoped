@@ -2,7 +2,7 @@ var Helper = {
 		
 	method: function (obj, func) {
 		return function () {
-			func.apply(obj, arguments);
+			return func.apply(obj, arguments);
 		};
 	},
 	

@@ -39,8 +39,20 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 		},
 		
 		binding: function (alias, namespaceLocator, options) {
-			if (!bindings[alias] || !bindings[alias].readonly)
-				bindings[alias] = Helper.extend(options, this.resolve(namespaceLocator));
+			if (!bindings[alias] || !bindings[alias].readonly) {
+				var ns;
+				if (Helper.typeOf(namespaceLocator) != "string") {
+					ns = {
+						namespace: newNamespace({
+							tree: true,
+							root: namespaceLocator
+						}),
+						path: null	
+					};
+				} else
+					ns = this.resolve(namespaceLocator);
+				bindings[alias] = Helper.extend(options, ns);
+			}
 			return this;
 		},
 		
@@ -70,6 +82,7 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 			});
 			var ns = this.resolve(args.namespaceLocator);
 			this.require(args.dependencies, args.hiddenDependencies, function () {
+				arguments[arguments.length - 1].ns = ns;
 				ns.namespace.set(ns.path, args.callback.apply(args.context || this, arguments));
 			}, this);
 			return this;
@@ -85,6 +98,7 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 			});
 			var ns = this.resolve(args.namespaceLocator);
 			this.require(args.dependencies, args.hiddenDependencies, function () {
+				arguments[arguments.length - 1].ns = ns;
 				ns.namespace.extend(ns.path, args.callback.apply(args.context || this, arguments));
 			}, this);
 			return this;
@@ -100,6 +114,7 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 			});
 			var ns = this.resolve(args.namespaceLocator);
 			this.require(args.dependencies, args.hiddenDependencies, function () {
+				arguments[arguments.length - 1].ns = ns;
 				var result = args.callback.apply(args.context || this, arguments);
 				if (result)
 					ns.namespace.set(ns.path, result);
@@ -118,6 +133,7 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 			var allDependencies = dependencies.concat(args.hiddenDependencies || []);
 			var count = allDependencies.length;
 			var deps = [];
+			var environment = {};
 			if (count) {
 				for (var i = 0; i < allDependencies.length; ++i) {
 					var ns = this.resolve(allDependencies[i]);
@@ -127,15 +143,19 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 						if (this.i < deps.length)
 							deps[this.i] = value;
 						count--;
-						if (count === 0)
+						if (count === 0) {
+							deps.push(environment);
 							args.callback.apply(args.context || this.ctx, deps);
+						}
 					}, {
 						ctx: this,
 						i: i
 					});
 				}
-			} else
+			} else {
+				deps.push(environment);
 				args.callback.apply(args.context || this, deps);
+			}
 			return this;
 		},
 		

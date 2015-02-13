@@ -15,6 +15,9 @@ var Public = {
 	define: Helper.method(rootScope, rootScope.define),
 	extend: Helper.method(rootScope, rootScope.extend),
 	require: Helper.method(rootScope, rootScope.require),
-	digest: Helper.method(rootScope, rootScope.digest)	
+	digest: Helper.method(rootScope, rootScope.digest),
+	
+	getGlobal: Helper.method(Globals, Globals.getPath),
+	setGlobal: Helper.method(Globals, Globals.setPath)
 	
 };

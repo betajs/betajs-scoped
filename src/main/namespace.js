@@ -2,7 +2,8 @@ function newNamespace (options) {
 	
 	options = Helper.extend({
 		tree: false,
-		global: false
+		global: false,
+		root: {}
 	}, options);
 	
 	function initNode(options) {
@@ -31,7 +32,7 @@ function newNamespace (options) {
 					treeRoot = global;
 			} catch (e) { }
 		} else
-			treeRoot = {};
+			treeRoot = options.root;
 		nsRoot.data = treeRoot;
 	}
 	
