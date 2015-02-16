@@ -18,6 +18,18 @@ var Helper = {
 		return Object.prototype.toString.call(obj) === '[object Array]' ? "array" : typeof obj;
 	},
 	
+	isEmpty: function (obj) {
+		if (obj === null || typeof obj === "undefined")
+			return true;
+		if (this.typeOf(obj) == "array")
+			return obj.length === 0;
+		if (typeof obj !== "object")
+			return false;
+		for (var key in obj)
+			return false;
+		return true;
+	},
+	
 	matchArgs: function (args, pattern) {
 		var i = 0;
 		var result = {};

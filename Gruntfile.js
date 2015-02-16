@@ -4,17 +4,23 @@ module.exports = function(grunt) {
 
 	grunt.initConfig({
 		pkg : grunt.file.readJSON('package.json'),
+		'revision-count': {
+		    options: {
+		      property: 'revisioncount',
+		      ref: 'HEAD'
+		    }
+		},
 		concat : {
 			options : {
 				banner : module.banner
 			},
 			dist : {
-				dest : 'dist/scoped.js',
+				dest : 'dist/scoped-raw.js',
 				src : [
 					'src/fragments/begin.js-fragment',
 					'src/main/globals.js',
 					'src/main/helper.js',
-					'src/main/scoped.js',
+					'src/main/attach.js',
 					'src/main/namespace.js',
 					'src/main/scopes.js',
 					'src/main/public.js',
@@ -23,6 +29,19 @@ module.exports = function(grunt) {
 				]
 			},
 		},
+		preprocess : {
+			options: {
+			    context : {
+			    	MAJOR_VERSION: '<%= revisioncount %>',
+			    	MINOR_VERSION: (new Date()).getTime()
+			    }
+			},
+			dist : {
+			    src : 'dist/scoped-raw.js',
+			    dest : 'dist/scoped.js'
+			}
+		},	
+		clean: ["dist/scoped-raw.js"],
 		uglify : {
 			options : {
 				banner : module.banner
@@ -58,12 +77,14 @@ module.exports = function(grunt) {
 		},
 	});
 
-	grunt.loadNpmTasks('grunt-newer');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-shell');	
+	grunt.loadNpmTasks('grunt-git-revision-count');
+	grunt.loadNpmTasks('grunt-shell');
+	grunt.loadNpmTasks('grunt-preprocess');
+	grunt.loadNpmTasks('grunt-contrib-clean');	
 
-	grunt.registerTask('default', ['newer:concat', 'newer:uglify']);
+	grunt.registerTask('default', ['revision-count', 'concat', 'preprocess', 'clean', 'uglify']);
 	grunt.registerTask('qunit', ['shell:qunit']);
 	grunt.registerTask('lint', ['shell:lint']);	
 	grunt.registerTask('check', ['lint', 'qunit']);

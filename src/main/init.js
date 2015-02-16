@@ -1,2 +1,2 @@
-Public.attach();
-Public.exports(Public);
+Public = Public.upgrade();
+Public.exports();

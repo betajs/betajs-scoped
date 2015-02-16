@@ -1,5 +1,5 @@
 /*!
-betajs-scoped - v0.0.1 - 2015-02-13
+betajs-scoped - v0.0.1 - 2015-02-15
 Copyright (c) Oliver Friedmann
 MIT Software License.
 */
@@ -82,6 +82,18 @@ var Helper = {
 		return Object.prototype.toString.call(obj) === '[object Array]' ? "array" : typeof obj;
 	},
 	
+	isEmpty: function (obj) {
+		if (obj === null || typeof obj === "undefined")
+			return true;
+		if (this.typeOf(obj) == "array")
+			return obj.length === 0;
+		if (typeof obj !== "object")
+			return false;
+		for (var key in obj)
+			return false;
+		return true;
+	},
+	
 	matchArgs: function (args, pattern) {
 		var i = 0;
 		var result = {};
@@ -97,37 +109,58 @@ var Helper = {
 	
 
 };
-var Scoped = {
+var Attach = {
 		
-	__namespace: "Scoped",
+	__namespace: "Scoped"
+		
+};
+
+Helper.extend(Attach, {
+	
+	upgrade: function (namespace) {
+		var current = Globals.get(namespace || Attach.__namespace);
+		if (current && Helper.typeOf(current) == "object" && current.guid == this.guid && Helper.typeOf(current.version) == "string") {
+			var my_version = this.version.split(".");
+			var current_version = current.version.split(".");
+			var newer = false;
+			for (var i = 0; i < Math.min(my_version.length, current_version.length); ++i) {
+				newer = my_version[i] > current_version[i];
+				if (my_version[i] != current_version[i]) 
+					break;
+			}
+			return newer ? this.attach(namespace) : current;				
+		} else
+			return this.attach(namespace);		
+	},
 
 	attach : function(namespace) {
 		if (namespace)
-			Scoped.__namespace = namespace;
-		var current = Globals.get(Scoped.__namespace);
+			Attach.__namespace = namespace;
+		var current = Globals.get(Attach.__namespace);
 		if (current == this)
 			return this;
-		Scoped.__revert = current;
+		Attach.__revert = current;
 		Globals.set(namespace, this);
 		return this;
 	},
 	
 	detach: function (forceDetach) {
 		if (forceDetach)
-			Globals.set(Scoped.__namespace, null);
-		if (typeof Scoped.__revert != "undefined")
-			Globals.set(Scoped.__namespace, Scoped.__revert);
-		delete Scoped.__revert;
+			Globals.set(Attach.__namespace, null);
+		if (typeof Attach.__revert != "undefined")
+			Globals.set(Attach.__namespace, Attach.__revert);
+		delete Attach.__revert;
 		return this;
 	},
 	
-	exports: function (object) {
-		if (typeof module != "undefined" && "exports" in module)
-			module.exports = object;
+	exports: function (object, forceExport) {
+		if (typeof module != "undefined" && "exports" in module && (forceExport || module.exports == this || !module.exports || Helper.isEmpty(module.exports)))
+			module.exports = object || this;
 		return this;
 	}	
 
-};
+});
+
 function newNamespace (options) {
 	
 	options = Helper.extend({
@@ -300,6 +333,9 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 	
 	return {
 		
+		getGlobal: Helper.method(Globals, Globals.getPath),
+		setGlobal: Helper.method(Globals, Globals.setPath),
+
 		nextScope: function () {
 			if (!nextScope)
 				nextScope = newScope(this, localNamespace, rootNamespace, globalNamespace);
@@ -449,12 +485,17 @@ var rootScope = newScope(null, rootNamespace, rootNamespace, globalNamespace);
 
 var Public = {
 		
-	attach: Scoped.attach,
-	detach: Scoped.detach,
-	exports: Scoped.exports,
+	guid: "4b6878ee-cb6a-46b3-94ac-27d91f58d666",
+	version: '2.1424027131921',
+		
+	upgrade: Attach.upgrade,
+	attach: Attach.attach,
+	detach: Attach.detach,
+	exports: Attach.exports,
 	
 	nextScope: Helper.method(rootScope, rootScope.nextScope),
-	subScope: Helper.method(rootScope, rootScope.nextScope),
+	subScope: Helper.method(rootScope, rootScope.subScope),
+	
 	binding: Helper.method(rootScope, rootScope.binding),
 	condition: Helper.method(rootScope, rootScope.condition),
 	define: Helper.method(rootScope, rootScope.define),
@@ -462,11 +503,11 @@ var Public = {
 	require: Helper.method(rootScope, rootScope.require),
 	digest: Helper.method(rootScope, rootScope.digest),
 	
-	getGlobal: Helper.method(Globals, Globals.getPath),
-	setGlobal: Helper.method(Globals, Globals.setPath)
+	getGlobal: Helper.method(rootScope, rootScope.getPath),
+	setGlobal: Helper.method(rootScope, rootScope.setPath)
 	
 };
-Public.attach();
-Public.exports(Public);
+Public = Public.upgrade();
+Public.exports();
 	return Public;
 }).call(this);

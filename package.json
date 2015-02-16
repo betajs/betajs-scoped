@@ -13,7 +13,9 @@
     "grunt-contrib-nodeunit": "",
     "grunt-contrib-concat": "",
     "grunt-contrib-uglify": "",
+    "grunt-contrib-clean": "",
     "grunt-shell": "",
-    "grunt-newer": ""
+    "grunt-preprocess": "",
+    "grunt-git-revision-count": ""
   }
 }

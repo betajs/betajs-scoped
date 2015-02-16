@@ -25,6 +25,9 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 	
 	return {
 		
+		getGlobal: Helper.method(Globals, Globals.getPath),
+		setGlobal: Helper.method(Globals, Globals.setPath),
+
 		nextScope: function () {
 			if (!nextScope)
 				nextScope = newScope(this, localNamespace, rootNamespace, globalNamespace);
