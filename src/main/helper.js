@@ -41,7 +41,12 @@ var Helper = {
 				i++;
 		}
 		return result;
-	}
+	},
 	
+	stringify: function (value) {
+		if (this.typeOf(value) == "function")
+			return "" + value;
+		return JSON.stringify(value);
+	}	
 
 };

@@ -13,7 +13,8 @@ function newNamespace (options) {
 			children: {},
 			watchers: [],
 			data: {},
-			ready: false
+			ready: false,
+			lazy: []
 		}, options);
 	}
 	
@@ -116,6 +117,15 @@ function newNamespace (options) {
 				callback: callback,
 				context: context
 			});
+			if (node.lazy.length > 0) {
+				var f = function () {
+					if (node.lazy.length > 0) {
+						var lazy = node.lazy.shift();
+						lazy.callback.call(lazy.context || this, node.data);
+					}
+				};
+				f(node);
+			}
 		}
 	}
 
@@ -130,6 +140,18 @@ function newNamespace (options) {
 			if (node.data)
 				nodeClearData(node);
 			nodeSetData(node, value);
+		},
+		
+		lazy: function (path, callback, context) {
+			var node = nodeNavigate(path);
+			if (node.ready)
+				callback(context || this, node.data);
+			else {
+				node.lazy.push({
+					callback: callback,
+					context: context
+				});
+			}
 		},
 		
 		digest: function (path) {

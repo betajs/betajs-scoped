@@ -23,11 +23,57 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 		}
 	};
 	
+	var custom = function (argmts, name, callback) {
+		var args = Helper.matchArgs(argmts, {
+			options: "object",
+			namespaceLocator: true,
+			dependencies: "array",
+			hiddenDependencies: "array",
+			callback: true,
+			context: "object"
+		});
+		
+		var options = Helper.extend({
+			lazy: this.options.lazy
+		}, args.options || {});
+		
+		var ns = this.resolve(args.namespaceLocator);
+		
+		var execute = function () {
+			this.require(args.dependencies, args.hiddenDependencies, function () {
+				arguments[arguments.length - 1].ns = ns;
+				if (this.options.compile) {
+					var params = [];
+					for (var i = 0; i < argmts.length; ++i)
+						params.push(Helper.stringify(argmts[i]));
+					this.compiled += this.options.ident + "." + name + "(" + params.join(", ") + ");\n\n";
+				}
+				var result = args.callback.apply(args.context || this, arguments);
+				callback.call(this, ns, result);
+			}, this);
+		};
+		
+		if (options.lazy)
+			ns.namespace.lazy(ns.path, execute, this);
+		else
+			execute.apply(this);
+
+		return this;
+	};
+	
 	return {
 		
 		getGlobal: Helper.method(Globals, Globals.getPath),
 		setGlobal: Helper.method(Globals, Globals.setPath),
-
+		
+		options: {
+			lazy: false,
+			ident: "Scoped",
+			compile: false			
+		},
+		
+		compiled: "",
+		
 		nextScope: function () {
 			if (!nextScope)
 				nextScope = newScope(this, localNamespace, rootNamespace, globalNamespace);
@@ -76,53 +122,22 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 		},
 		
 		define: function () {
-			var args = Helper.matchArgs(arguments, {
-				namespaceLocator: true,
-				dependencies: "array",
-				hiddenDependencies: "array",
-				callback: true,
-				context: "object"
+			return custom.call(this, arguments, "define", function (ns, result) {
+				ns.namespace.set(ns.path, result);
 			});
-			var ns = this.resolve(args.namespaceLocator);
-			this.require(args.dependencies, args.hiddenDependencies, function () {
-				arguments[arguments.length - 1].ns = ns;
-				ns.namespace.set(ns.path, args.callback.apply(args.context || this, arguments));
-			}, this);
-			return this;
 		},
 		
 		extend: function () {
-			var args = Helper.matchArgs(arguments, {
-				namespaceLocator: true,
-				dependencies: "array",
-				hiddenDependencies: "array",
-				callback: true,
-				context: "object"
+			return custom.call(this, arguments, "extend", function (ns, result) {
+				ns.namespace.extend(ns.path, result);
 			});
-			var ns = this.resolve(args.namespaceLocator);
-			this.require(args.dependencies, args.hiddenDependencies, function () {
-				arguments[arguments.length - 1].ns = ns;
-				ns.namespace.extend(ns.path, args.callback.apply(args.context || this, arguments));
-			}, this);
-			return this;
 		},
 		
 		condition: function () {
-			var args = Helper.matchArgs(arguments, {
-				namespaceLocator: true,
-				dependencies: "array",
-				hiddenDependencies: "array",
-				callback: true,
-				context: "object"
-			});
-			var ns = this.resolve(args.namespaceLocator);
-			this.require(args.dependencies, args.hiddenDependencies, function () {
-				arguments[arguments.length - 1].ns = ns;
-				var result = args.callback.apply(args.context || this, arguments);
+			return custom.call(this, arguments, "condition", function (ns, result) {
 				if (result)
 					ns.namespace.set(ns.path, result);
-			}, this);
-			return this;
+			});
 		},
 		
 		require: function () {

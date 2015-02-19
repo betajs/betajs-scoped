@@ -1,23 +1,99 @@
 test("basic dependencies", function() {
 	stop();
-    Scoped.extend("scope:Second", ["scope:Second"], ["scope:Second.result"], function (second) {
-    	return {
-    		add: second.result + 2
-    	};
-    });
-	Scoped.define("scope:Second", ["scope:First"], function (first) {
+	var counter = 0;
+	var S = Scoped.subScope();
+	var o = "";
+	S.define("scope:B", ["scope:A"], function (A) {
+		o += "B";
+		counter++;
 		return {
-			result: first.a * 5
+			b: A.a + 2
 		};
 	});
-    Scoped.define("scope:First", function() {
-        return {
-            a : 3
-        };
+	S.define("scope:A", function () {
+		o += "A";
+		counter++;
+		return {
+			a: 5
+		};
+	});
+	S.define("scope:C", function () {
+		o += "C";
+		counter++;
+		return {
+			c: 3
+		};
+	});
+	S.define("scope:D", ["scope:B", "scope:C"], function (B, C) {
+		o += "D";
+		counter++;
+		return {
+			d: B.b + C.c + 1
+		};
+	});
+	S.define("scope:E", function () {
+		o += "E";
+		counter++;
+		return {
+			a: 5
+		};
+	});	
+    S.require(["scope:D"], function (D) {
+    	QUnit.equal(o, "ABCDE");
+    	QUnit.equal(D.d, 5 + 2 + 3 + 1);
+    	QUnit.equal(counter, 5);
+    	start();
     });
-    Scoped.require(["scope:Second"], ["scope:Second.add"], function (second) {
-    	QUnit.equal(second.result, 3 * 5);
-    	QUnit.equal(second.add, 3 * 5 + 2);
+});
+
+
+test("lazy dependencies", function() {
+	stop();
+	var counter = 0;
+	var S = Scoped.subScope();
+	S.options.lazy = true;
+	//S.options.compile = true;
+	var o = "";
+	S.define("scope:B", ["scope:A"], function (A) {
+		o += "B";
+		counter++;
+		return {
+			b: A.a + 2
+		};
+	});
+	S.define("scope:A", function () {
+		o += "A";
+		counter++;
+		return {
+			a: 5
+		};
+	});
+	S.define("scope:C", function () {
+		o += "C";
+		counter++;
+		return {
+			c: 3
+		};
+	});
+	S.define("scope:D", ["scope:B", "scope:C"], function (B, C) {
+		o += "D";
+		counter++;
+		return {
+			d: B.b + C.c + 1
+		};
+	});
+	S.define("scope:E", function () {
+		o += "E";
+		counter++;
+		return {
+			a: 5
+		};
+	});
+    S.require(["scope:D"], function (D) {
+		QUnit.equal(o, "ABCD");
+    	QUnit.equal(D.d, 5 + 2 + 3 + 1);
+    	QUnit.equal(counter, 4);
+    	//console.log(S.compiled);
     	start();
     });
 });
