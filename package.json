@@ -1,21 +1,23 @@
 {
-  "name": "betajs-scoped",
-  "version": "0.0.1",
-  "description": "BetaJS-Scoped is a small module for scoped loading of modules and dependencies.",
-  "homepage": "http://betajs.com",
-  "contributors": [
-  	"Oliver Friedmann"
-  ],
-  "license": "MIT",
-  "devDependencies": {
-    "grunt": "",
-    "grunt-contrib-jshint": "",
-    "grunt-contrib-nodeunit": "",
-    "grunt-contrib-concat": "",
-    "grunt-contrib-uglify": "",
-    "grunt-contrib-clean": "",
-    "grunt-shell": "",
-    "grunt-preprocess": "",
-    "grunt-git-revision-count": ""
-  }
+	"name": "betajs-scoped",
+	"version": "0.0.1",
+	"description": "BetaJS-Scoped is a small module for scoped loading of modules and dependencies.",
+	"homepage": "http://betajs.com",
+	"contributors": ["Oliver Friedmann"],
+	"license": "MIT",
+	"devDependencies": {
+		"grunt": "",
+		"grunt-contrib-jshint": "",
+		"grunt-contrib-nodeunit": "",
+		"grunt-contrib-concat": "",
+		"grunt-contrib-uglify": "",
+		"grunt-contrib-clean": "",
+		"grunt-shell": "",
+		"grunt-preprocess": "",
+		"grunt-git-revision-count": ""
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/betajs/betajs-scoped.git"
+	}
 }

@@ -1,5 +1,5 @@
 /*!
-betajs-scoped - v0.0.1 - 2015-02-19
+betajs-scoped - v0.0.1 - 2015-02-20
 Copyright (c) Oliver Friedmann
 MIT Software License.
 */
@@ -116,11 +116,7 @@ var Helper = {
 };
 var Attach = {
 		
-	__namespace: "Scoped"
-		
-};
-
-Helper.extend(Attach, {
+	__namespace: "Scoped",
 	
 	upgrade: function (namespace) {
 		var current = Globals.get(namespace || Attach.__namespace);
@@ -145,7 +141,7 @@ Helper.extend(Attach, {
 		if (current == this)
 			return this;
 		Attach.__revert = current;
-		Globals.set(namespace, this);
+		Globals.set(Attach.__namespace, this);
 		return this;
 	},
 	
@@ -158,13 +154,14 @@ Helper.extend(Attach, {
 		return this;
 	},
 	
-	exports: function (object, forceExport) {
-		if (typeof module != "undefined" && "exports" in module && (forceExport || module.exports == this || !module.exports || Helper.isEmpty(module.exports)))
-			module.exports = object || this;
+	exports: function (mod, object, forceExport) {
+		mod = mod || module;
+		if (typeof mod != "undefined" && "exports" in mod && (forceExport || mod.exports == this || !mod.exports || Helper.isEmpty(mod.exports)))
+			mod.exports = object || this;
 		return this;
 	}	
 
-});
+};
 
 function newNamespace (options) {
 	
@@ -479,9 +476,10 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 			var args = Helper.matchArgs(arguments, {
 				dependencies: "array",
 				hiddenDependencies: "array",
-				callback: true,
+				callback: "function",
 				context: "object"
 			});
+			args.callback = args.callback || function () {};
 			var dependencies = args.dependencies || [];
 			var allDependencies = dependencies.concat(args.hiddenDependencies || []);
 			var count = allDependencies.length;
@@ -528,7 +526,7 @@ var rootScope = newScope(null, rootNamespace, rootNamespace, globalNamespace);
 var Public = Helper.extend(rootScope, {
 		
 	guid: "4b6878ee-cb6a-46b3-94ac-27d91f58d666",
-	version: '3.1424370853283',
+	version: '4.1424490684264',
 		
 	upgrade: Attach.upgrade,
 	attach: Attach.attach,

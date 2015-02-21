@@ -1,10 +1,6 @@
 var Attach = {
 		
-	__namespace: "Scoped"
-		
-};
-
-Helper.extend(Attach, {
+	__namespace: "Scoped",
 	
 	upgrade: function (namespace) {
 		var current = Globals.get(namespace || Attach.__namespace);
@@ -29,7 +25,7 @@ Helper.extend(Attach, {
 		if (current == this)
 			return this;
 		Attach.__revert = current;
-		Globals.set(namespace, this);
+		Globals.set(Attach.__namespace, this);
 		return this;
 	},
 	
@@ -42,10 +38,11 @@ Helper.extend(Attach, {
 		return this;
 	},
 	
-	exports: function (object, forceExport) {
-		if (typeof module != "undefined" && "exports" in module && (forceExport || module.exports == this || !module.exports || Helper.isEmpty(module.exports)))
-			module.exports = object || this;
+	exports: function (mod, object, forceExport) {
+		mod = mod || module;
+		if (typeof mod != "undefined" && "exports" in mod && (forceExport || mod.exports == this || !mod.exports || Helper.isEmpty(mod.exports)))
+			mod.exports = object || this;
 		return this;
 	}	
 
-});
+};

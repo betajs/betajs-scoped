@@ -144,9 +144,10 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 			var args = Helper.matchArgs(arguments, {
 				dependencies: "array",
 				hiddenDependencies: "array",
-				callback: true,
+				callback: "function",
 				context: "object"
 			});
+			args.callback = args.callback || function () {};
 			var dependencies = args.dependencies || [];
 			var allDependencies = dependencies.concat(args.hiddenDependencies || []);
 			var count = allDependencies.length;
