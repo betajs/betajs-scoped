@@ -39,8 +39,8 @@ var Attach = {
 	},
 	
 	exports: function (mod, object, forceExport) {
-		mod = mod || module;
-		if (typeof mod != "undefined" && "exports" in mod && (forceExport || mod.exports == this || !mod.exports || Helper.isEmpty(mod.exports)))
+		mod = mod || (typeof module != "undefined" ? module : null);
+		if (typeof mod == "object" && mod && "exports" in mod && (forceExport || mod.exports == this || !mod.exports || Helper.isEmpty(mod.exports)))
 			mod.exports = object || this;
 		return this;
 	}	

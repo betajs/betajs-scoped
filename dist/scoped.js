@@ -1,5 +1,5 @@
 /*!
-betajs-scoped - v0.0.1 - 2015-02-20
+betajs-scoped - v0.0.1 - 2015-02-21
 Copyright (c) Oliver Friedmann
 MIT Software License.
 */
@@ -155,8 +155,8 @@ var Attach = {
 	},
 	
 	exports: function (mod, object, forceExport) {
-		mod = mod || module;
-		if (typeof mod != "undefined" && "exports" in mod && (forceExport || mod.exports == this || !mod.exports || Helper.isEmpty(mod.exports)))
+		mod = mod || (typeof module != "undefined" ? module : null);
+		if (typeof mod == "object" && mod && "exports" in mod && (forceExport || mod.exports == this || !mod.exports || Helper.isEmpty(mod.exports)))
 			mod.exports = object || this;
 		return this;
 	}	
@@ -526,7 +526,7 @@ var rootScope = newScope(null, rootNamespace, rootNamespace, globalNamespace);
 var Public = Helper.extend(rootScope, {
 		
 	guid: "4b6878ee-cb6a-46b3-94ac-27d91f58d666",
-	version: '4.1424490684264',
+	version: '5.1424568052349',
 		
 	upgrade: Attach.upgrade,
 	attach: Attach.attach,
