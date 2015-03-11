@@ -114,6 +114,8 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 				};
 			} else {
 				var binding = bindings[parts[0]];
+				if (!binding)
+					throw ("The namespace '" + parts[0] + "' has not been defined (yet).");
 				return {
 					namespace: binding.namespace,
 					path : binding.path && parts[1] ? binding.path + "." + parts[1] : (binding.path || parts[1])

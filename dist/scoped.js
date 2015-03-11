@@ -1,5 +1,5 @@
 /*!
-betajs-scoped - v0.0.1 - 2015-02-21
+betajs-scoped - v0.0.1 - 2015-03-10
 Copyright (c) Oliver Friedmann
 MIT Software License.
 */
@@ -446,6 +446,8 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 				};
 			} else {
 				var binding = bindings[parts[0]];
+				if (!binding)
+					throw ("The namespace '" + parts[0] + "' has not been defined (yet).");
 				return {
 					namespace: binding.namespace,
 					path : binding.path && parts[1] ? binding.path + "." + parts[1] : (binding.path || parts[1])
@@ -526,7 +528,7 @@ var rootScope = newScope(null, rootNamespace, rootNamespace, globalNamespace);
 var Public = Helper.extend(rootScope, {
 		
 	guid: "4b6878ee-cb6a-46b3-94ac-27d91f58d666",
-	version: '5.1424568052349',
+	version: '6.1425988926567',
 		
 	upgrade: Attach.upgrade,
 	attach: Attach.attach,
