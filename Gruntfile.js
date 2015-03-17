@@ -73,6 +73,16 @@ module.exports = function(grunt) {
             	src: [
             		"src/*/*.js"
             	]
+			},
+			lintfinal: {
+		    	command: "jsl --process ./dist/scoped.js",
+		    	options: {
+                	stdout: true,
+                	stderr: true,
+            	},
+            	src: [
+            		"src/*/*.js"
+            	]
 			}
 		},
 	});
@@ -86,7 +96,7 @@ module.exports = function(grunt) {
 
 	grunt.registerTask('default', ['revision-count', 'concat', 'preprocess', 'clean', 'uglify']);
 	grunt.registerTask('qunit', ['shell:qunit']);
-	grunt.registerTask('lint', ['shell:lint']);	
+	grunt.registerTask('lint', ['shell:lint', 'shell:lintfinal']);	
 	grunt.registerTask('check', ['lint', 'qunit']);
 
 };
