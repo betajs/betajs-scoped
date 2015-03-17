@@ -14,7 +14,8 @@
 		"grunt-contrib-clean": "",
 		"grunt-shell": "",
 		"grunt-preprocess": "",
-		"grunt-git-revision-count": ""
+		"grunt-git-revision-count": "",
+		"grunt-closure-tools": ""
 	},
 	"repository": {
 		"type": "git",

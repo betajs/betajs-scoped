@@ -1,30 +1,18 @@
 var Globals = {
 
 	get : function(key) {
-		try {
-			if (window)
-				return window[key];
-		} catch (e) {
-		}
-		try {
-			if (global)
-				return global[key];
-		} catch (e) {
-		}
+		if (typeof window !== "undefined")
+			return window[key];
+		if (typeof global !== "undefined")
+			return global[key];
 		return null;
 	},
 
 	set : function(key, value) {
-		try {
-			if (window)
-				window[key] = value;
-		} catch (e) {
-		}
-		try {
-			if (global)
-				global[key] = value;
-		} catch (e) {
-		}
+		if (typeof window !== "undefined")
+			window[key] = value;
+		if (typeof global !== "undefined")
+			global[key] = value;
 		return value;
 	},
 	

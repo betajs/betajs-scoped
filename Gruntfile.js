@@ -41,7 +41,7 @@ module.exports = function(grunt) {
 			    dest : 'dist/scoped.js'
 			}
 		},	
-		clean: ["dist/scoped-raw.js"],
+		clean: ["dist/scoped-raw.js", "dist/scoped-closure.js"],
 		uglify : {
 			options : {
 				banner : module.banner
@@ -85,6 +85,20 @@ module.exports = function(grunt) {
             	]
 			}
 		},
+		closureCompiler:  {
+			options: {
+			    compilerFile: process.env.CLOSURE_PATH + "/compiler.jar",
+			    compilerOpts: {
+			       compilation_level: 'ADVANCED_OPTIMIZATIONS',
+			       warning_level: 'verbose',
+			       externs: ["./src/fragments/closure.js-fragment"]
+			    }
+		    },
+		    dist: {
+		    	src: "./dist/scoped.js",
+		    	dest: "./dist/scoped-closure.js"
+		    }
+		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-concat');
@@ -92,11 +106,13 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-git-revision-count');
 	grunt.loadNpmTasks('grunt-shell');
 	grunt.loadNpmTasks('grunt-preprocess');
-	grunt.loadNpmTasks('grunt-contrib-clean');	
+	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-closure-tools');
 
 	grunt.registerTask('default', ['revision-count', 'concat', 'preprocess', 'clean', 'uglify']);
 	grunt.registerTask('qunit', ['shell:qunit']);
 	grunt.registerTask('lint', ['shell:lint', 'shell:lintfinal']);	
 	grunt.registerTask('check', ['lint', 'qunit']);
+	grunt.registerTask('closure', ['closureCompiler', 'clean']);
 
 };

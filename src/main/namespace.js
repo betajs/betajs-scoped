@@ -118,10 +118,11 @@ function newNamespace (options) {
 				context: context
 			});
 			if (node.lazy.length > 0) {
-				var f = function () {
+				var f = function (node) {
 					if (node.lazy.length > 0) {
 						var lazy = node.lazy.shift();
 						lazy.callback.call(lazy.context || this, node.data);
+						f(node);
 					}
 				};
 				f(node);
