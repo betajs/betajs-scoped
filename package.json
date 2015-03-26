@@ -12,10 +12,13 @@
 		"grunt-contrib-concat": "",
 		"grunt-contrib-uglify": "",
 		"grunt-contrib-clean": "",
-		"grunt-shell": "",
 		"grunt-preprocess": "",
 		"grunt-git-revision-count": "",
-		"grunt-closure-tools": ""
+		"grunt-closure-tools": "",
+		"grunt-node-qunit": "",
+		"grunt-contrib-jshint": "",
+		"grunt-wget": "",
+		"grunt-jsdoc": "beta"
 	},
 	"repository": {
 		"type": "git",

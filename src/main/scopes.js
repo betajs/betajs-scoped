@@ -156,19 +156,20 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 			var deps = [];
 			var environment = {};
 			if (count) {
+				var f = function (value) {
+					if (this.i < deps.length)
+						deps[this.i] = value;
+					count--;
+					if (count === 0) {
+						deps.push(environment);
+						args.callback.apply(args.context || this.ctx, deps);
+					}
+				};
 				for (var i = 0; i < allDependencies.length; ++i) {
 					var ns = this.resolve(allDependencies[i]);
 					if (i < dependencies.length)
 						deps.push(null);
-					ns.namespace.obtain(ns.path, function (value) {
-						if (this.i < deps.length)
-							deps[this.i] = value;
-						count--;
-						if (count === 0) {
-							deps.push(environment);
-							args.callback.apply(args.context || this.ctx, deps);
-						}
-					}, {
+					ns.namespace.obtain(ns.path, f, {
 						ctx: this,
 						i: i
 					});

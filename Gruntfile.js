@@ -52,38 +52,11 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		shell: {
-			qunit: {
-		    	command: 'qunit -c Scoped:./dist/scoped.js -t ./tests/*.js',
-		    	options: {
-                	stdout: true,
-                	stderr: true,
-            	},
-            	src: [
-            		"src/*.js",
-            		"tests/*.js"
-            	]
-			},
-			lint: {
-		    	command: "jsl +recurse --process ./src/*.js",
-		    	options: {
-                	stdout: true,
-                	stderr: true,
-            	},
-            	src: [
-            		"src/*/*.js"
-            	]
-			},
-			lintfinal: {
-		    	command: "jsl --process ./dist/scoped.js",
-		    	options: {
-                	stdout: true,
-                	stderr: true,
-            	},
-            	src: [
-            		"src/*/*.js"
-            	]
-			}
+		jshint : {
+			source : [ "./src/main/*.js"],
+			dist : [ "./dist/scoped.js" ],
+			gruntfile : [ "./Gruntfile.js" ],
+			tests : [ "./tests/*.js" ]
 		},
 		closureCompiler:  {
 			options: {
@@ -98,6 +71,15 @@ module.exports = function(grunt) {
 		    	src: "./dist/scoped.js",
 		    	dest: "./dist/scoped-closure.js"
 		    }
+		},
+		'node-qunit' : {
+			dist : {
+				code : './dist/scoped.js',
+				tests : grunt.file.expand("./tests/*.js"),
+				done : function(err, res) {
+					publishResults("node", res, this.async());
+				}
+			}
 		}
 	});
 
@@ -108,11 +90,14 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-preprocess');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-closure-tools');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-node-qunit');
 
 	grunt.registerTask('default', ['revision-count', 'concat', 'preprocess', 'clean', 'uglify']);
-	grunt.registerTask('qunit', ['shell:qunit']);
-	grunt.registerTask('lint', ['shell:lint', 'shell:lintfinal']);	
-	grunt.registerTask('check', ['lint', 'qunit']);
+	grunt.registerTask('qunit', [ 'node-qunit' ]);
+	grunt.registerTask('lint', [ 'jshint:source', 'jshint:dist',
+			'jshint:tests', 'jshint:gruntfile' ]);
+	grunt.registerTask('check', [ 'lint', 'qunit' ]);
 	grunt.registerTask('closure', ['closureCompiler', 'clean']);
 
 };
