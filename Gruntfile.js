@@ -25,9 +25,9 @@ module.exports = function(grunt) {
 					'src/main/scopes.js',
 					'src/main/public.js',
 					'src/main/init.js',
-					'src/fragments/end.js-fragment',
+					'src/fragments/end.js-fragment'
 				]
-			},
+			}
 		},
 		preprocess : {
 			options: {
@@ -48,11 +48,15 @@ module.exports = function(grunt) {
 			},
 			dist : {
 				files : {
-					'dist/scoped.min.js' : [ 'dist/scoped.js' ],					
+					'dist/scoped.min.js' : [ 'dist/scoped.js' ]					
 				}
 			}
 		},
 		jshint : {
+			options: {
+				es5: false,
+				es3: true
+			},
 			source : [ "./src/main/*.js"],
 			dist : [ "./dist/scoped.js" ],
 			gruntfile : [ "./Gruntfile.js" ],
