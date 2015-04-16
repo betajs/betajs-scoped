@@ -99,7 +99,7 @@ module.exports = function(grunt) {
 			}
 		},
 		template : {
-			browserstack : {
+			"browserstack-desktop" : {
 				options : {
 					data: {
 						data: {
@@ -120,10 +120,26 @@ module.exports = function(grunt) {
 				                'ie_9',
 				                'ie_8',
 				                'ie_7',
-				                'ie_6',
+				                'ie_6'
+				            ]
+						}
+					}
+				},
+				files : {
+					"browserstack.json" : ["json.tpl"]
+				}
+			},
+			"browserstack-mobile" : {
+				options : {
+					data: {
+						data: {
+							"test_path" : "tests/tests.html",
+							"test_framework" : "qunit",
+							"timeout": 10 * 60,
+							"browsers": [
 							    {"os": "ios", "os_version": "8.0"}, 
-/*							    {"os": "ios", "os_version": "6.1"},
-							    {"os": "android", "os_version": "5.0"}, */
+							    {"os": "ios", "os_version": "7.0"},
+							    {"os": "android", "os_version": "4.4"},
 							    {"os": "android", "os_version": "4.0"}
 				            ]
 						}
@@ -132,9 +148,10 @@ module.exports = function(grunt) {
 				files : {
 					"browserstack.json" : ["json.tpl"]
 				}
-			}
+			}			
 		}
 	});
+	
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-git-revision-count');
@@ -153,6 +170,7 @@ module.exports = function(grunt) {
 			'jshint:tests', 'jshint:gruntfile' ]);
 	grunt.registerTask('check', [ 'lint', 'qunit' ]);
 	grunt.registerTask('closure', ['closureCompiler', 'clean:closure']);
-	grunt.registerTask('browserstack', [ 'template:browserstack', 'shell:browserstack', 'clean:browserstack' ]);
+	grunt.registerTask('browserstack-desktop', [ 'template:browserstack-desktop', 'shell:browserstack', 'clean:browserstack' ]);
+	grunt.registerTask('browserstack-mobile', [ 'template:browserstack-mobile', 'shell:browserstack', 'clean:browserstack' ]);
 
 };
