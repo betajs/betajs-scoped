@@ -41,7 +41,11 @@ module.exports = function(grunt) {
 			    dest : 'dist/scoped.js'
 			}
 		},	
-		clean: ["dist/scoped-raw.js", "dist/scoped-closure.js"],
+		clean: {
+			raw: "dist/scoped-raw.js",
+			closure: "dist/scoped-closure.js",
+			browserstack : [ "./browserstack.json", "BrowserStackLocal" ]
+		},
 		uglify : {
 			options : {
 				banner : module.banner
@@ -84,9 +88,53 @@ module.exports = function(grunt) {
 					publishResults("node", res, this.async());
 				}
 			}
+		},
+		shell : {
+			browserstack : {
+				command : 'browserstack-runner',
+				options : {
+					stdout : true,
+					stderr : true
+				}
+			}
+		},
+		template : {
+			browserstack : {
+				options : {
+					data: {
+						data: {
+							"test_path" : "tests/tests.html",
+							"test_framework" : "qunit",
+							"timeout": 10 * 60,
+							"browsers": [
+				              	'firefox_latest',
+							    'firefox_4',
+				                'chrome_latest',
+					            'chrome_14',
+				                'safari_latest',
+					            'safari_4',
+				                'opera_latest', 
+							    'opera_12_15',
+				                'ie_11',
+				                'ie_10',
+				                'ie_9',
+				                'ie_8',
+				                'ie_7',
+				                'ie_6',
+							    {"os": "ios", "os_version": "8.0"}, 
+/*							    {"os": "ios", "os_version": "6.1"},
+							    {"os": "android", "os_version": "5.0"}, */
+							    {"os": "android", "os_version": "4.0"}
+				            ]
+						}
+					}
+				},
+				files : {
+					"browserstack.json" : ["json.tpl"]
+				}
+			}
 		}
 	});
-
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-git-revision-count');
@@ -96,12 +144,15 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-closure-tools');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-node-qunit');
+	grunt.loadNpmTasks('grunt-shell');
+	grunt.loadNpmTasks('grunt-template');
 
-	grunt.registerTask('default', ['revision-count', 'concat', 'preprocess', 'clean', 'uglify']);
+	grunt.registerTask('default', ['revision-count', 'concat', 'preprocess', 'clean:raw', 'uglify']);
 	grunt.registerTask('qunit', [ 'node-qunit' ]);
 	grunt.registerTask('lint', [ 'jshint:source', 'jshint:dist',
 			'jshint:tests', 'jshint:gruntfile' ]);
 	grunt.registerTask('check', [ 'lint', 'qunit' ]);
-	grunt.registerTask('closure', ['closureCompiler', 'clean']);
+	grunt.registerTask('closure', ['closureCompiler', 'clean:closure']);
+	grunt.registerTask('browserstack', [ 'template:browserstack', 'shell:browserstack', 'clean:browserstack' ]);
 
 };
