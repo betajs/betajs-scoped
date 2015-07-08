@@ -185,7 +185,12 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 			var ns = this.resolve(namespaceLocator);
 			ns.namespace.digest(ns.path);
 			return this;
-		}		
+		},
+		
+		unresolved: function (namespaceLocator) {
+			var ns = this.resolve(namespaceLocator);
+			return ns.namespace.unresolvedWatchers();
+		}
 		
 	};
 	

@@ -129,6 +129,17 @@ function newNamespace (options) {
 			}
 		}
 	}
+	
+	function nodeUnresolvedWatchers(node, base, result) {
+		node = node || nsRoot;
+		base = base ? base + "." + node.route : node.route;
+		result = result || [];
+		if (!node.ready)
+			result.push(base);
+		for (var k in node.children)
+			result = nodeUnresolvedWatchers(node.children[k], base, result);
+		return result;
+	}
 
 	return {
 		
@@ -161,6 +172,10 @@ function newNamespace (options) {
 		
 		obtain: function (path, callback, context) {
 			nodeAddWatcher(nodeNavigate(path), callback, context);
+		},
+		
+		unresolvedWatchers: function () {
+			return nodeUnresolvedWatchers();
 		}
 		
 	};
