@@ -174,8 +174,8 @@ function newNamespace (options) {
 			nodeAddWatcher(nodeNavigate(path), callback, context);
 		},
 		
-		unresolvedWatchers: function () {
-			return nodeUnresolvedWatchers();
+		unresolvedWatchers: function (path) {
+			return nodeUnresolvedWatchers(nodeNavigate(path), path);
 		}
 		
 	};
