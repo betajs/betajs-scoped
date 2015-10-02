@@ -9,7 +9,7 @@ var Attach = {
 			var current_version = current.version.split(".");
 			var newer = false;
 			for (var i = 0; i < Math.min(my_version.length, current_version.length); ++i) {
-				newer = my_version[i] > current_version[i];
+				newer = parseInt(my_version[i], 10) > parseInt(current_version[i], 10);
 				if (my_version[i] != current_version[i]) 
 					break;
 			}
