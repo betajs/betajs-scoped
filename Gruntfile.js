@@ -44,7 +44,20 @@ module.exports = function(grunt) {
 		clean: {
 			raw: "dist/scoped-raw.js",
 			closure: "dist/scoped-closure.js",
-			browserstack : [ "./browserstack.json", "BrowserStackLocal" ]
+			browserstack : [ "./browserstack.json", "BrowserStackLocal" ],
+			jsdoc : ['./jsdoc.conf.json']
+		},
+		jsdoc : {
+			dist : {
+				src : [ './README.md', './src/main/*.js' ],					
+				options : {
+					destination : 'docs',
+					template : "node_modules/grunt-betajs-docs-compile",
+					configure : "./jsdoc.conf.json",
+					tutorials: "./docsrc/tutorials",
+					recurse: true
+				}
+			}
 		},
 		uglify : {
 			options : {
@@ -99,6 +112,42 @@ module.exports = function(grunt) {
 			}
 		},
 		template : {
+			"jsdoc": {
+				options: {
+					data: {
+						data: {
+							"tags": {
+								"allowUnknownTags": true
+							},
+							"plugins": ["plugins/markdown"],
+							"templates": {
+								"cleverLinks": false,
+								"monospaceLinks": false,
+								"dateFormat": "ddd MMM Do YYYY",
+								"outputSourceFiles": true,
+								"outputSourcePath": true,
+								"systemName": "BetaJS",
+								"footer": "",
+								"copyright": "BetaJS (c) - MIT License",
+								"navType": "vertical",
+								"theme": "cerulean",
+								"linenums": true,
+								"collapseSymbols": false,
+								"inverseNav": true,
+								"highlightTutorialCode": true,
+								"protocol": "fred://"
+							},
+							"markdown": {
+								"parser": "gfm",
+								"hardwrap": true
+							}
+						}
+					}
+				},
+				files : {
+					"jsdoc.conf.json": ["json.tpl"]
+				}
+			},
 			"readme" : {
 				options : {
 					data: {
@@ -173,9 +222,11 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-node-qunit');
 	grunt.loadNpmTasks('grunt-shell');
+	grunt.loadNpmTasks('grunt-jsdoc');
 	grunt.loadNpmTasks('grunt-template');
 
 	grunt.registerTask('default', ['revision-count', 'concat', 'preprocess', 'clean:raw', 'uglify']);
+	grunt.registerTask('docs', ['template:jsdoc', 'jsdoc', 'clean:jsdoc']);
 	grunt.registerTask('qunit', [ 'node-qunit' ]);
 	grunt.registerTask('lint', [ 'jshint:source', 'jshint:dist',
 			'jshint:tests', 'jshint:gruntfile' ]);
