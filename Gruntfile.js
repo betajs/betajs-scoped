@@ -135,7 +135,9 @@ module.exports = function(grunt) {
 								"collapseSymbols": false,
 								"inverseNav": true,
 								"highlightTutorialCode": true,
-								"protocol": "fred://"
+								"protocol": "fred://",
+								"singleTutorials": true,
+								"emptyTutorials": true
 							},
 							"markdown": {
 								"parser": "gfm",
