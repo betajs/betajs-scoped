@@ -10,6 +10,20 @@ var Public = Helper.extend(rootScope, {
 	upgrade: Attach.upgrade,
 	attach: Attach.attach,
 	detach: Attach.detach,
-	exports: Attach.exports
+	exports: Attach.exports,
+	
+	__exportScoped: function () {
+		return {
+			globalNamespace: globalNamespace.__export(),
+			rootNamespace: rootNamespace.__export(),
+			rootScope: rootScope.__export()
+		};
+	},
+	
+	__importScoped: function (data) {
+		globalNamespace.__import(data.globalNamespace);
+		rootNamespace.__import(data.rootNamespace);
+		rootScope.__import(data.rootScope);
+	}
 	
 });

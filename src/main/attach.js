@@ -25,6 +25,15 @@ var Attach = {
 		if (current == this)
 			return this;
 		Attach.__revert = current;
+		if (current) {
+			try {
+				var exported = current.__exportScoped();
+				this.__exportBackup = this.__exportScoped();
+				this.__importScoped(exported);
+			} catch (e) {
+				// We cannot upgrade the old version.
+			}
+		}
 		Globals.set(Attach.__namespace, this);
 		return this;
 	},
@@ -35,6 +44,8 @@ var Attach = {
 		if (typeof Attach.__revert != "undefined")
 			Globals.set(Attach.__namespace, Attach.__revert);
 		delete Attach.__revert;
+		if (Attach.__exportBackup)
+			this.__importScoped(Attach.__exportBackup);
 		return this;
 	},
 	

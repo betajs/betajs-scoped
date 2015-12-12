@@ -1,8 +1,11 @@
-function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
+function newScope (parent, parentNS, rootNS, globalNS) {
 	
 	var self = this;
 	var nextScope = null;
 	var childScopes = [];
+	var parentNamespace = parentNS;
+	var rootNamespace = rootNS;
+	var globalNamespace = globalNS;
 	var localNamespace = newNamespace({tree: true});
 	var privateNamespace = newNamespace({tree: false});
 	
@@ -125,7 +128,53 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 		
 		define: function () {
 			return custom.call(this, arguments, "define", function (ns, result) {
+				if (ns.namespace.get(ns.path))
+					throw ("Scoped namespace " + ns.path + " has already been defined. Use extend to extend an existing namespace instead");
 				ns.namespace.set(ns.path, result);
+			});
+		},
+		
+		assume: function () {
+			var args = Helper.matchArgs(arguments, {
+				assumption: true,
+				dependencies: "array",
+				callback: true,
+				context: "object",
+				error: "string"
+			});
+			var dependencies = args.dependencies || [];
+			dependencies.unshift(args.assumption);
+			this.require(dependencies, function (assumptionValue) {
+				if (!args.callback.apply(args.context || this, arguments))
+					throw ("Scoped Assumption '" + args.assumption + "' failed, value is " + assumptionValue + (args.error ? ", but assuming " + args.error : "")); 
+			});
+		},
+		
+		assumeVersion: function () {
+			var args = Helper.matchArgs(arguments, {
+				assumption: true,
+				dependencies: "array",
+				callback: true,
+				context: "object",
+				error: "string"
+			});
+			var dependencies = args.dependencies || [];
+			dependencies.unshift(args.assumption);
+			this.require(dependencies, function () {
+				var argv = arguments;
+				var assumptionValue = argv[0];
+				argv[0] = assumptionValue.split(".");
+				for (var i = 0; i < argv[0].length; ++i)
+					argv[0][i] = parseInt(argv[0][i], 10);
+				if (Helper.typeOf(args.callback) === "function") {
+					if (!args.callback.apply(args.context || this, args))
+						throw ("Scoped Assumption '" + args.assumption + "' failed, value is " + assumptionValue + (args.error ? ", but assuming " + args.error : ""));
+				} else {
+					var version = (args.callback + "").split(".");
+					for (var j = 0; j < Math.min(argv[0].length, version.length); ++j)
+						if (parseInt(version[j], 10) > argv[0][j])
+							throw ("Scoped Version Assumption '" + args.assumption + "' failed, value is " + assumptionValue + ", but assuming at least " + args.callback);
+				}
 			});
 		},
 		
@@ -190,6 +239,24 @@ function newScope (parent, parentNamespace, rootNamespace, globalNamespace) {
 		unresolved: function (namespaceLocator) {
 			var ns = this.resolve(namespaceLocator);
 			return ns.namespace.unresolvedWatchers(ns.path);
+		},
+		
+		__export: function () {
+			return {
+				parentNamespace: parentNamespace.__export(),
+				rootNamespace: rootNamespace.__export(),
+				globalNamespace: globalNamespace.__export(),
+				localNamespace: localNamespace.__export(),
+				privateNamespace: privateNamespace.__export()
+			};
+		},
+		
+		__import: function (data) {
+			parentNamespace.__import(data.parentNamespace);
+			rootNamespace.__import(data.rootNamespace);
+			globalNamespace.__import(data.globalNamespace);
+			localNamespace.__import(data.localNamespace);
+			privateNamespace.__import(data.privateNamespace);
 		}
 		
 	};

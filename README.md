@@ -1,4 +1,4 @@
-# betajs-scoped 0.0.1
+# betajs-scoped 0.0.4
 
 BetaJS-Scoped is a small module for scoped loading of modules and dependencies.
 

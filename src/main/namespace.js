@@ -20,9 +20,8 @@ function newNamespace (options) {
 	
 	var nsRoot = initNode({ready: true});
 	
-	var treeRoot = null;
-	
 	if (options.tree) {
+		var treeRoot = null;
 		if (options.global) {
 			try {
 				if (window)
@@ -69,14 +68,17 @@ function newNamespace (options) {
 	}
 	
 	function nodeSetData(node, value) {
-		if (typeof value == "object") {
-			for (var key in value) {
+		if (typeof value == "object" && node.ready) {
+			for (var key in value)
 				node.data[key] = value[key];
-				if (node.children[key])
-					node.children[key].data = value[key];
-			}
 		} else
 			node.data = value;
+		if (typeof value == "object") {
+			for (var ckey in value) {
+				if (node.children[ckey])
+					node.children[ckey].data = value[ckey];
+			}
+		}
 		nodeEnforce(node);
 		for (var k in node.children)
 			nodeDigest(node.children[k]);
@@ -156,6 +158,11 @@ function newNamespace (options) {
 			nodeSetData(node, value);
 		},
 		
+		get: function (path) {
+			var node = nodeNavigate(path);
+			return node.ready ? node.data : null;
+		},
+		
 		lazy: function (path, callback, context) {
 			var node = nodeNavigate(path);
 			if (node.ready)
@@ -178,6 +185,18 @@ function newNamespace (options) {
 		
 		unresolvedWatchers: function (path) {
 			return nodeUnresolvedWatchers(nodeNavigate(path), path);
+		},
+		
+		__export: function () {
+			return {
+				options: options,
+				nsRoot: nsRoot
+			};
+		},
+		
+		__import: function (data) {
+			options = data.options;
+			nsRoot = data.nsRoot;
 		}
 		
 	};

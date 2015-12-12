@@ -24,12 +24,14 @@ test("basic dependencies", function() {
 			c: 3
 		};
 	});
+	var ptr = null;
 	S.define("scope:D", ["scope:B", "scope:C"], function (B, C) {
 		o += "D";
 		counter++;
-		return {
+		ptr = {
 			d: B.b + C.c + 1
 		};
+		return ptr;
 	});
 	S.define("scope:E", function () {
 		o += "E";
@@ -42,6 +44,7 @@ test("basic dependencies", function() {
     	QUnit.equal(o, "ABCDE");
     	QUnit.equal(D.d, 5 + 2 + 3 + 1);
     	QUnit.equal(counter, 5);
+    	QUnit.equal(ptr, D);
     	start();
     });
 });
@@ -75,12 +78,14 @@ test("lazy dependencies", function() {
 			c: 3
 		};
 	});
+	var ptr = null;
 	S.define("scope:D", ["scope:B", "scope:C"], function (B, C) {
 		o += "D";
 		counter++;
-		return {
+		ptr = {
 			d: B.b + C.c + 1
 		};
+		return ptr; 
 	});
 	S.define("scope:E", function () {
 		o += "E";
@@ -94,6 +99,7 @@ test("lazy dependencies", function() {
     	QUnit.equal(D.d, 5 + 2 + 3 + 1);
     	QUnit.equal(counter, 4);
     	//console.log(S.compiled);
+    	QUnit.equal(ptr, D);
     	start();
     });
 });
