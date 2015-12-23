@@ -51,7 +51,7 @@ function newScope (parent, parentNS, rootNS, globalNS) {
 						params.push(Helper.stringify(argmts[i]));
 					this.compiled += this.options.ident + "." + name + "(" + params.join(", ") + ");\n\n";
 				}
-				var result = args.callback.apply(args.context || this, arguments);
+				var result = this.options.compile ? {} : args.callback.apply(args.context || this, arguments);
 				callback.call(this, ns, result);
 			}, this);
 		};
