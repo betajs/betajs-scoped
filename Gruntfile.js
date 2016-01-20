@@ -38,7 +38,7 @@ module.exports = function(grunt) {
 			},
 			dist : {
 			    src : 'dist/scoped-raw.js',
-			    dest : 'dist/scoped.js'
+			    dest : 'dist/scoped-flowtype.js'
 			}
 		},	
 		clean: {
@@ -204,6 +204,17 @@ module.exports = function(grunt) {
 					"browserstack.json" : ["compile/json.tpl"]
 				}
 			}			
+		},
+		babel: {
+			options: {
+				sourceMap: false,
+				plugins: ["transform-flow-strip-types"]
+			},
+			dist: {
+				files: {
+					'dist/scoped.js': 'dist/scoped-flowtype.js'
+				}
+			}
 		}
 	});
 	
@@ -218,8 +229,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-shell');
 	grunt.loadNpmTasks('grunt-jsdoc');
 	grunt.loadNpmTasks('grunt-template');
+	grunt.loadNpmTasks('grunt-babel');
 
-	grunt.registerTask('default', ['revision-count', 'concat', 'preprocess', 'clean:raw', 'uglify']);
+	grunt.registerTask('default', ['revision-count', 'concat', 'preprocess', 'babel', 'clean:raw', 'uglify']);
 	grunt.registerTask('docs', ['template:jsdoc', 'jsdoc', 'clean:jsdoc']);
 	grunt.registerTask('qunit', [ 'node-qunit' ]);
 	grunt.registerTask('lint', [ 'jshint:source', 'jshint:dist',

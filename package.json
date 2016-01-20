@@ -17,10 +17,13 @@
 		"grunt-node-qunit": "",
 		"grunt-contrib-jshint": "",
 		"grunt-wget": "",
-		"grunt-jsdoc": "beta",
+		"grunt-jsdoc": "",
 		"grunt-shell": "",
 		"grunt-template": "",
-	    "grunt-betajs-docs-compile":""
+	    "grunt-betajs-docs-compile":"",
+		"grunt-babel": "",
+		"babel-plugin-transform-flow-strip-types": "",
+		"grunt-flow-type-check": ""
 	},
 	"repository": {
 		"type": "git",
