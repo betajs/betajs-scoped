@@ -4,7 +4,7 @@
 	"description": "BetaJS-Scoped is a small module for scoped loading of modules and dependencies.",
 	"homepage": "http://betajs.com",
 	"contributors": ["Oliver Friedmann"],
-	"license": "MIT",
+	"license": "Apache 2.0",
 	"devDependencies": {
 		"grunt": "",
 		"grunt-contrib-jshint": "",
@@ -14,7 +14,6 @@
 		"grunt-contrib-clean": "",
 		"grunt-preprocess": "",
 		"grunt-git-revision-count": "",
-		"grunt-closure-tools": "",
 		"grunt-node-qunit": "",
 		"grunt-contrib-jshint": "",
 		"grunt-wget": "",
@@ -26,6 +25,9 @@
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/betajs/betajs-scoped.git"
+	},
+	"scripts": {
+		"test": "grunt check"
 	},
 	"meta": {
 		"status": "Active, Production ready",

@@ -50,6 +50,6 @@ Active, Production ready
 
 ## License
 
-MIT
+Apache 2.0
 
 

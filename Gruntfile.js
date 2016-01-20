@@ -43,7 +43,6 @@ module.exports = function(grunt) {
 		},	
 		clean: {
 			raw: "dist/scoped-raw.js",
-			closure: "dist/scoped-closure.js",
 			browserstack : [ "./browserstack.json", "BrowserStackLocal" ],
 			jsdoc : ['./jsdoc.conf.json']
 		},
@@ -78,20 +77,6 @@ module.exports = function(grunt) {
 			dist : [ "./dist/scoped.js" ],
 			gruntfile : [ "./Gruntfile.js" ],
 			tests : [ "./tests/*.js" ]
-		},
-		closureCompiler:  {
-			options: {
-			    compilerFile: process.env.CLOSURE_PATH + "/compiler.jar",
-			    compilerOpts: {
-			       compilation_level: 'ADVANCED_OPTIMIZATIONS',
-			       warning_level: 'verbose',
-			       externs: ["./src/fragments/closure.js-fragment"]
-			    }
-		    },
-		    dist: {
-		    	src: "./dist/scoped.js",
-		    	dest: "./dist/scoped-closure.js"
-		    }
 		},
 		'node-qunit' : {
 			dist : {
@@ -147,7 +132,7 @@ module.exports = function(grunt) {
 					}
 				},
 				files : {
-					"jsdoc.conf.json": ["json.tpl"]
+					"jsdoc.conf.json": ["compile/json.tpl"]
 				}
 			},
 			"readme" : {
@@ -158,7 +143,15 @@ module.exports = function(grunt) {
 					}
 				},
 				files : {
-					"README.md" : ["readme.tpl"]
+					"README.md" : ["compile/readme.tpl"]
+				}
+			},
+			"license" : {
+				options : {
+					data: grunt.file.readJSON('package.json')
+				},
+				files : {
+					"LICENSE" : ["compile/license.tpl"]
 				}
 			},
 			"browserstack-desktop" : {
@@ -188,7 +181,7 @@ module.exports = function(grunt) {
 					}
 				},
 				files : {
-					"browserstack.json" : ["json.tpl"]
+					"browserstack.json" : ["compile/json.tpl"]
 				}
 			},
 			"browserstack-mobile" : {
@@ -208,7 +201,7 @@ module.exports = function(grunt) {
 					}
 				},
 				files : {
-					"browserstack.json" : ["json.tpl"]
+					"browserstack.json" : ["compile/json.tpl"]
 				}
 			}			
 		}
@@ -220,7 +213,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-shell');
 	grunt.loadNpmTasks('grunt-preprocess');
 	grunt.loadNpmTasks('grunt-contrib-clean');
-	grunt.loadNpmTasks('grunt-closure-tools');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-node-qunit');
 	grunt.loadNpmTasks('grunt-shell');
@@ -233,9 +225,9 @@ module.exports = function(grunt) {
 	grunt.registerTask('lint', [ 'jshint:source', 'jshint:dist',
 			'jshint:tests', 'jshint:gruntfile' ]);
 	grunt.registerTask('check', [ 'lint', 'qunit' ]);
-	grunt.registerTask('closure', ['closureCompiler', 'clean:closure']);
 	grunt.registerTask('browserstack-desktop', [ 'template:browserstack-desktop', 'shell:browserstack', 'clean:browserstack' ]);
 	grunt.registerTask('browserstack-mobile', [ 'template:browserstack-mobile', 'shell:browserstack', 'clean:browserstack' ]);
 	grunt.registerTask('readme', [ 'template:readme' ]);
+	grunt.registerTask('license', [ 'template:license' ]);
 
 };
