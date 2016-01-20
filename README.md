@@ -1,4 +1,4 @@
-# betajs-scoped 0.0.5
+# betajs-scoped 0.0.6 [![Build Status](https://api.travis-ci.org/betajs/betajs-scoped.svg?branch=master)]
 
 BetaJS-Scoped is a small module for scoped loading of modules and dependencies.
 

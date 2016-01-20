@@ -1,4 +1,4 @@
-<%= indent %># <%= framework.name %> <%= framework.version %>
+<%= indent %># <%= framework.name %> <%= framework.version %> [![Build Status](https://api.travis-ci.org/betajs/<%= framework.name %>.svg?branch=master)]
 
 <%= framework.description %>
 
