@@ -1,11 +1,15 @@
-function newNamespace (options) {
-	
-	options = Helper.extend({
-		tree: false,
-		global: false,
-		root: {}
-	}, options);
-	
+function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object}) {
+
+	var options: {
+		tree: boolean,
+	    global: boolean,
+	    root: Object
+	} = {
+		tree: typeof opts.tree === "boolean" ? opts.tree : false,
+		global: typeof opts.global === "boolean" ? opts.global : false,
+		root: typeof opts.root === "object" ? opts.root : {}
+	};
+
 	function initNode(options) {
 		return Helper.extend({
 			route: null,

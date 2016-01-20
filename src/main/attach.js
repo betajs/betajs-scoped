@@ -1,6 +1,7 @@
 var Attach = {
 		
 	__namespace: "Scoped",
+	__revert: null,
 	
 	upgrade: function (namespace) {
 		var current = Globals.get(namespace || Attach.__namespace);

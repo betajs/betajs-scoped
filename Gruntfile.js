@@ -12,7 +12,7 @@ module.exports = function(grunt) {
 		},
 		concat : {
 			options : {
-				banner : module.banner
+				banner : "/* @flow */" + module.banner
 			},
 			dist : {
 				dest : 'dist/scoped-raw.js',
@@ -73,7 +73,7 @@ module.exports = function(grunt) {
 				es5: false,
 				es3: true
 			},
-			source : [ "./src/main/*.js"],
+			//source : [ "./src/main/*.js"],
 			dist : [ "./dist/scoped.js" ],
 			gruntfile : [ "./Gruntfile.js" ],
 			tests : [ "./tests/*.js" ]
@@ -215,6 +215,19 @@ module.exports = function(grunt) {
 					'dist/scoped.js': 'dist/scoped-flowtype.js'
 				}
 			}
+		},
+		flow: {
+			dist: {
+				src: 'dist/',            // `.flowconfig` folder
+				options: {
+					background: false,    // Watch/Server mode
+					all: false,           // Check all files regardless
+					lib: '',              // Library directory
+					stripRoot: false,     // Relative vs Absolute paths
+					weak: false,          // Force weak check
+					showAllErrors: true // Show more than 50 errors
+				}
+			}
 		}
 	});
 	
@@ -230,13 +243,15 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-jsdoc');
 	grunt.loadNpmTasks('grunt-template');
 	grunt.loadNpmTasks('grunt-babel');
+	grunt.loadNpmTasks('grunt-flow-type-check');
 
 	grunt.registerTask('default', ['revision-count', 'concat', 'preprocess', 'babel', 'clean:raw', 'uglify']);
 	grunt.registerTask('docs', ['template:jsdoc', 'jsdoc', 'clean:jsdoc']);
 	grunt.registerTask('qunit', [ 'node-qunit' ]);
-	grunt.registerTask('lint', [ 'jshint:source', 'jshint:dist',
+	grunt.registerTask('lint', [ /*'jshint:source',*/ 'jshint:dist',
 			'jshint:tests', 'jshint:gruntfile' ]);
 	grunt.registerTask('check', [ 'lint', 'qunit' ]);
+	grunt.registerTask('flowcheck', ['flow:dist']);
 	grunt.registerTask('browserstack-desktop', [ 'template:browserstack-desktop', 'shell:browserstack', 'clean:browserstack' ]);
 	grunt.registerTask('browserstack-mobile', [ 'template:browserstack-mobile', 'shell:browserstack', 'clean:browserstack' ]);
 	grunt.registerTask('readme', [ 'template:readme' ]);
