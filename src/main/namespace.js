@@ -10,34 +10,42 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 		root: typeof opts.root === "object" ? opts.root : {}
 	};
 
-	function initNode(options) {
-		return Helper.extend({
-			route: null,
-			parent: null,
+	type Node = {
+		route: ?string,
+		parent: ?Node,
+		children: any,
+		watchers: any,
+		data: any,
+		ready: boolean,
+		lazy: any
+	};
+
+	function initNode(options): Node {
+		return {
+			route: typeof options.route === "string" ? options.route : null,
+			parent: typeof options.parent === "object" ? options.parent : null,
+			ready: typeof options.ready === "boolean" ? options.ready : false,
 			children: {},
 			watchers: [],
 			data: {},
-			ready: false,
 			lazy: []
-		}, options);
+		};
 	}
 	
 	var nsRoot = initNode({ready: true});
 	
 	if (options.tree) {
-		var treeRoot = null;
 		if (options.global) {
 			try {
 				if (window)
-					treeRoot = window;
+					nsRoot.data = window;
 			} catch (e) { }
 			try {
 				if (global)
-					treeRoot = global;
+					nsRoot.data = global;
 			} catch (e) { }
 		} else
-			treeRoot = options.root;
-		nsRoot.data = treeRoot;
+			nsRoot.data = options.root;
 	}
 	
 	function nodeDigest(node) {
@@ -47,7 +55,7 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 			nodeDigest(node.parent);
 			return;
 		}
-		if (node.route in node.parent.data) {
+		if (node.route && node.parent && (node.route in node.parent.data)) {
 			node.data = node.parent.data[node.route];
 			node.ready = true;
 			for (var i = 0; i < node.watchers.length; ++i)
@@ -64,8 +72,10 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 		if (node.parent && !node.parent.ready)
 			nodeEnforce(node.parent);
 		node.ready = true;
-		if (options.tree && typeof node.parent.data == "object")
-			node.parent.data[node.route] = node.data;
+		if (node.parent) {
+			if (options.tree && typeof node.parent.data == "object")
+				node.parent.data[node.route] = node.data;
+		}
 		for (var i = 0; i < node.watchers.length; ++i)
 			node.watchers[i].callback.call(node.watchers[i].context || this, node.data);
 		node.watchers = [];

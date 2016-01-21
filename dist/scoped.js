@@ -1,5 +1,5 @@
 /*!
-betajs-scoped - v0.0.5 - 2016-01-20
+betajs-scoped - v0.0.6 - 2016-01-20
 Copyright (c) Oliver Friedmann
 Apache 2.0 Software License.
 */
@@ -149,30 +149,28 @@ var Scoped = function () {
 		};
 
 		function initNode(options) {
-			return Helper.extend({
-				route: null,
-				parent: null,
+			return {
+				route: typeof options.route === "string" ? options.route : null,
+				parent: typeof options.parent === "object" ? options.parent : null,
+				ready: typeof options.ready === "boolean" ? options.ready : false,
 				children: {},
 				watchers: [],
 				data: {},
-				ready: false,
 				lazy: []
-			}, options);
+			};
 		}
 
 		var nsRoot = initNode({ ready: true });
 
 		if (options.tree) {
-			var treeRoot = null;
 			if (options.global) {
 				try {
-					if (window) treeRoot = window;
+					if (window) nsRoot.data = window;
 				} catch (e) {}
 				try {
-					if (global) treeRoot = global;
+					if (global) nsRoot.data = global;
 				} catch (e) {}
-			} else treeRoot = options.root;
-			nsRoot.data = treeRoot;
+			} else nsRoot.data = options.root;
 		}
 
 		function nodeDigest(node) {
@@ -181,7 +179,7 @@ var Scoped = function () {
 				nodeDigest(node.parent);
 				return;
 			}
-			if (node.route in node.parent.data) {
+			if (node.route && node.parent && node.route in node.parent.data) {
 				node.data = node.parent.data[node.route];
 				node.ready = true;
 				for (var i = 0; i < node.watchers.length; ++i) node.watchers[i].callback.call(node.watchers[i].context || this, node.data);
@@ -194,7 +192,9 @@ var Scoped = function () {
 			if (node.ready) return;
 			if (node.parent && !node.parent.ready) nodeEnforce(node.parent);
 			node.ready = true;
-			if (options.tree && typeof node.parent.data == "object") node.parent.data[node.route] = node.data;
+			if (node.parent) {
+				if (options.tree && typeof node.parent.data == "object") node.parent.data[node.route] = node.data;
+			}
 			for (var i = 0; i < node.watchers.length; ++i) node.watchers[i].callback.call(node.watchers[i].context || this, node.data);
 			node.watchers = [];
 		}
@@ -573,7 +573,7 @@ var Scoped = function () {
 	var Public = Helper.extend(rootScope, {
 
 		guid: "4b6878ee-cb6a-46b3-94ac-27d91f58d666",
-		version: '26.1453324140654',
+		version: '31.1453334885429',
 
 		upgrade: Attach.upgrade,
 		attach: Attach.attach,
