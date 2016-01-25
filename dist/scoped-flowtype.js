@@ -1,12 +1,12 @@
 /* @flow *//*!
-betajs-scoped - v0.0.6 - 2016-01-20
+betajs-scoped - v0.0.6 - 2016-01-25
 Copyright (c) Oliver Friedmann
 Apache 2.0 Software License.
 */
 var Scoped = (function () {
 var Globals = {
 
-	get : function(key) {
+	get : function(key: string) {
 		if (typeof window !== "undefined")
 			return window[key];
 		if (typeof global !== "undefined")
@@ -14,7 +14,7 @@ var Globals = {
 		return null;
 	},
 
-	set : function(key, value) {
+	set : function(key: string, value) {
 		if (typeof window !== "undefined")
 			window[key] = value;
 		if (typeof global !== "undefined")
@@ -22,7 +22,7 @@ var Globals = {
 		return value;
 	},
 	
-	setPath: function (path, value) {
+	setPath: function (path: string, value) {
 		var args = path.split(".");
 		if (args.length == 1)
 			return this.set(path, value);		
@@ -36,7 +36,7 @@ var Globals = {
 		return value;
 	},
 	
-	getPath: function (path) {
+	getPath: function (path: string) {
 		var args = path.split(".");
 		if (args.length == 1)
 			return this.get(path);		
@@ -50,6 +50,10 @@ var Globals = {
 	}
 
 };
+declare module Helper {
+	declare function extend<A, B>(a: A, b: B): A & B;
+}
+
 var Helper = {
 		
 	method: function (obj, func) {
@@ -57,7 +61,7 @@ var Helper = {
 			return func.apply(obj, arguments);
 		};
 	},
-	
+
 	extend: function (base, overwrite) {
 		base = base || {};
 		overwrite = overwrite || {};
@@ -107,7 +111,7 @@ var Attach = {
 	__namespace: "Scoped",
 	__revert: null,
 	
-	upgrade: function (namespace) {
+	upgrade: function (namespace: ?string) {
 		var current = Globals.get(namespace || Attach.__namespace);
 		if (current && Helper.typeOf(current) == "object" && current.guid == this.guid && Helper.typeOf(current.version) == "string") {
 			var my_version = this.version.split(".");
@@ -123,7 +127,7 @@ var Attach = {
 			return this.attach(namespace);		
 	},
 
-	attach : function(namespace) {
+	attach : function(namespace: ?string) {
 		if (namespace)
 			Attach.__namespace = namespace;
 		var current = Globals.get(Attach.__namespace);
@@ -143,7 +147,7 @@ var Attach = {
 		return this;
 	},
 	
-	detach: function (forceDetach) {
+	detach: function (forceDetach: ?boolean) {
 		if (forceDetach)
 			Globals.set(Attach.__namespace, null);
 		if (typeof Attach.__revert != "undefined")
@@ -652,7 +656,7 @@ var rootScope = newScope(null, rootNamespace, rootNamespace, globalNamespace);
 var Public = Helper.extend(rootScope, {
 		
 	guid: "4b6878ee-cb6a-46b3-94ac-27d91f58d666",
-	version: '31.1453334885429',
+	version: '32.1453754118896',
 		
 	upgrade: Attach.upgrade,
 	attach: Attach.attach,

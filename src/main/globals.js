@@ -1,6 +1,6 @@
 var Globals = {
 
-	get : function(key) {
+	get : function(key: string) {
 		if (typeof window !== "undefined")
 			return window[key];
 		if (typeof global !== "undefined")
@@ -8,7 +8,7 @@ var Globals = {
 		return null;
 	},
 
-	set : function(key, value) {
+	set : function(key: string, value) {
 		if (typeof window !== "undefined")
 			window[key] = value;
 		if (typeof global !== "undefined")
@@ -16,7 +16,7 @@ var Globals = {
 		return value;
 	},
 	
-	setPath: function (path, value) {
+	setPath: function (path: string, value) {
 		var args = path.split(".");
 		if (args.length == 1)
 			return this.set(path, value);		
@@ -30,7 +30,7 @@ var Globals = {
 		return value;
 	},
 	
-	getPath: function (path) {
+	getPath: function (path: string) {
 		var args = path.split(".");
 		if (args.length == 1)
 			return this.get(path);		

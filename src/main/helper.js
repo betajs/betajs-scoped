@@ -1,3 +1,7 @@
+declare module Helper {
+	declare function extend<A, B>(a: A, b: B): A & B;
+}
+
 var Helper = {
 		
 	method: function (obj, func) {
@@ -5,7 +9,7 @@ var Helper = {
 			return func.apply(obj, arguments);
 		};
 	},
-	
+
 	extend: function (base, overwrite) {
 		base = base || {};
 		overwrite = overwrite || {};
