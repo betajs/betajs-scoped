@@ -73,7 +73,7 @@ module.exports = function(grunt) {
 				es5: false,
 				es3: true
 			},
-			//source : [ "./src/main/*.js"],
+			source : [ "./src/main/*.js"],
 			dist : [ "./dist/scoped.js" ],
 			gruntfile : [ "./Gruntfile.js" ],
 			tests : [ "./tests/*.js" ]
@@ -249,7 +249,7 @@ module.exports = function(grunt) {
 	grunt.registerTask('default', ['revision-count', 'concat', 'preprocess', 'babel', 'clean:raw', 'uglify']);
 	grunt.registerTask('docs', ['template:jsdoc', 'jsdoc', 'clean:jsdoc']);
 	grunt.registerTask('qunit', [ 'node-qunit' ]);
-	grunt.registerTask('lint', [ /*'jshint:source',*/ 'jshint:dist',
+	grunt.registerTask('lint', [ 'jshint:source', 'jshint:dist',
 			'jshint:tests', 'jshint:gruntfile' ]);
 	grunt.registerTask('check', [ 'lint', 'qunit' ]);
 	grunt.registerTask('flowcheck', ['flow:dist']);

@@ -1,6 +1,8 @@
+/*::
 declare module Helper {
 	declare function extend<A, B>(a: A, b: B): A & B;
 }
+*/
 
 var Helper = {
 		

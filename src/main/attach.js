@@ -3,7 +3,7 @@ var Attach = {
 	__namespace: "Scoped",
 	__revert: null,
 	
-	upgrade: function (namespace: ?string) {
+	upgrade: function (namespace/* : ?string */) {
 		var current = Globals.get(namespace || Attach.__namespace);
 		if (current && Helper.typeOf(current) == "object" && current.guid == this.guid && Helper.typeOf(current.version) == "string") {
 			var my_version = this.version.split(".");
@@ -19,7 +19,7 @@ var Attach = {
 			return this.attach(namespace);		
 	},
 
-	attach : function(namespace: ?string) {
+	attach : function(namespace/* : ?string */) {
 		if (namespace)
 			Attach.__namespace = namespace;
 		var current = Globals.get(Attach.__namespace);
@@ -39,7 +39,7 @@ var Attach = {
 		return this;
 	},
 	
-	detach: function (forceDetach: ?boolean) {
+	detach: function (forceDetach/* : ?boolean */) {
 		if (forceDetach)
 			Globals.set(Attach.__namespace, null);
 		if (typeof Attach.__revert != "undefined")

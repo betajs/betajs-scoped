@@ -1,15 +1,16 @@
-function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object}) {
+function newNamespace (opts/* : {tree ?: boolean, global ?: boolean, root ?: Object} */) {
 
-	var options: {
+	var options/* : {
 		tree: boolean,
 	    global: boolean,
 	    root: Object
-	} = {
+	} */ = {
 		tree: typeof opts.tree === "boolean" ? opts.tree : false,
 		global: typeof opts.global === "boolean" ? opts.global : false,
 		root: typeof opts.root === "object" ? opts.root : {}
 	};
 
+	/*::
 	type Node = {
 		route: ?string,
 		parent: ?Node,
@@ -19,8 +20,9 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 		ready: boolean,
 		lazy: any
 	};
+	*/
 
-	function initNode(options): Node {
+	function initNode(options)/* : Node */ {
 		return {
 			route: typeof options.route === "string" ? options.route : null,
 			parent: typeof options.parent === "object" ? options.parent : null,
@@ -48,7 +50,7 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 			nsRoot.data = options.root;
 	}
 	
-	function nodeDigest(node) {
+	function nodeDigest(node/* : Node */) {
 		if (node.ready)
 			return;
 		if (node.parent && !node.parent.ready) {
@@ -66,7 +68,7 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 		}
 	}
 	
-	function nodeEnforce(node) {
+	function nodeEnforce(node/* : Node */) {
 		if (node.ready)
 			return;
 		if (node.parent && !node.parent.ready)
@@ -81,7 +83,7 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 		node.watchers = [];
 	}
 	
-	function nodeSetData(node, value) {
+	function nodeSetData(node/* : Node */, value) {
 		if (typeof value == "object" && node.ready) {
 			for (var key in value)
 				node.data[key] = value[key];
@@ -98,14 +100,14 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 			nodeDigest(node.children[k]);
 	}
 	
-	function nodeClearData(node) {
+	function nodeClearData(node/* : Node */) {
 		if (node.ready && node.data) {
 			for (var key in node.data)
 				delete node.data[key];
 		}
 	}
 	
-	function nodeNavigate(path) {
+	function nodeNavigate(path/* : ?String */) {
 		if (!path)
 			return nsRoot;
 		var routes = path.split(".");
@@ -125,7 +127,7 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 		return current;
 	}
 	
-	function nodeAddWatcher(node, callback, context) {
+	function nodeAddWatcher(node/* : Node */, callback, context) {
 		if (node.ready)
 			callback.call(context || this, node.data);
 		else {
@@ -146,7 +148,7 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 		}
 	}
 	
-	function nodeUnresolvedWatchers(node, base, result) {
+	function nodeUnresolvedWatchers(node/* : Node */, base, result) {
 		node = node || nsRoot;
 		result = result || [];
 		if (!node.ready)

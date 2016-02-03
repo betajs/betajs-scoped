@@ -1,12 +1,12 @@
 /* @flow *//*!
-betajs-scoped - v0.0.6 - 2016-01-25
+betajs-scoped - v0.0.6 - 2016-02-03
 Copyright (c) Oliver Friedmann
 Apache 2.0 Software License.
 */
 var Scoped = (function () {
 var Globals = {
 
-	get : function(key: string) {
+	get : function(key/* : string */) {
 		if (typeof window !== "undefined")
 			return window[key];
 		if (typeof global !== "undefined")
@@ -14,7 +14,7 @@ var Globals = {
 		return null;
 	},
 
-	set : function(key: string, value) {
+	set : function(key/* : string */, value) {
 		if (typeof window !== "undefined")
 			window[key] = value;
 		if (typeof global !== "undefined")
@@ -22,7 +22,7 @@ var Globals = {
 		return value;
 	},
 	
-	setPath: function (path: string, value) {
+	setPath: function (path/* : string */, value) {
 		var args = path.split(".");
 		if (args.length == 1)
 			return this.set(path, value);		
@@ -36,7 +36,7 @@ var Globals = {
 		return value;
 	},
 	
-	getPath: function (path: string) {
+	getPath: function (path/* : string */) {
 		var args = path.split(".");
 		if (args.length == 1)
 			return this.get(path);		
@@ -50,9 +50,11 @@ var Globals = {
 	}
 
 };
+/*::
 declare module Helper {
 	declare function extend<A, B>(a: A, b: B): A & B;
 }
+*/
 
 var Helper = {
 		
@@ -111,7 +113,7 @@ var Attach = {
 	__namespace: "Scoped",
 	__revert: null,
 	
-	upgrade: function (namespace: ?string) {
+	upgrade: function (namespace/* : ?string */) {
 		var current = Globals.get(namespace || Attach.__namespace);
 		if (current && Helper.typeOf(current) == "object" && current.guid == this.guid && Helper.typeOf(current.version) == "string") {
 			var my_version = this.version.split(".");
@@ -127,7 +129,7 @@ var Attach = {
 			return this.attach(namespace);		
 	},
 
-	attach : function(namespace: ?string) {
+	attach : function(namespace/* : ?string */) {
 		if (namespace)
 			Attach.__namespace = namespace;
 		var current = Globals.get(Attach.__namespace);
@@ -147,7 +149,7 @@ var Attach = {
 		return this;
 	},
 	
-	detach: function (forceDetach: ?boolean) {
+	detach: function (forceDetach/* : ?boolean */) {
 		if (forceDetach)
 			Globals.set(Attach.__namespace, null);
 		if (typeof Attach.__revert != "undefined")
@@ -167,18 +169,19 @@ var Attach = {
 
 };
 
-function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object}) {
+function newNamespace (opts/* : {tree ?: boolean, global ?: boolean, root ?: Object} */) {
 
-	var options: {
+	var options/* : {
 		tree: boolean,
 	    global: boolean,
 	    root: Object
-	} = {
+	} */ = {
 		tree: typeof opts.tree === "boolean" ? opts.tree : false,
 		global: typeof opts.global === "boolean" ? opts.global : false,
 		root: typeof opts.root === "object" ? opts.root : {}
 	};
 
+	/*::
 	type Node = {
 		route: ?string,
 		parent: ?Node,
@@ -188,8 +191,9 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 		ready: boolean,
 		lazy: any
 	};
+	*/
 
-	function initNode(options): Node {
+	function initNode(options)/* : Node */ {
 		return {
 			route: typeof options.route === "string" ? options.route : null,
 			parent: typeof options.parent === "object" ? options.parent : null,
@@ -217,7 +221,7 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 			nsRoot.data = options.root;
 	}
 	
-	function nodeDigest(node) {
+	function nodeDigest(node/* : Node */) {
 		if (node.ready)
 			return;
 		if (node.parent && !node.parent.ready) {
@@ -235,7 +239,7 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 		}
 	}
 	
-	function nodeEnforce(node) {
+	function nodeEnforce(node/* : Node */) {
 		if (node.ready)
 			return;
 		if (node.parent && !node.parent.ready)
@@ -250,7 +254,7 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 		node.watchers = [];
 	}
 	
-	function nodeSetData(node, value) {
+	function nodeSetData(node/* : Node */, value) {
 		if (typeof value == "object" && node.ready) {
 			for (var key in value)
 				node.data[key] = value[key];
@@ -267,14 +271,14 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 			nodeDigest(node.children[k]);
 	}
 	
-	function nodeClearData(node) {
+	function nodeClearData(node/* : Node */) {
 		if (node.ready && node.data) {
 			for (var key in node.data)
 				delete node.data[key];
 		}
 	}
 	
-	function nodeNavigate(path) {
+	function nodeNavigate(path/* : ?String */) {
 		if (!path)
 			return nsRoot;
 		var routes = path.split(".");
@@ -294,7 +298,7 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 		return current;
 	}
 	
-	function nodeAddWatcher(node, callback, context) {
+	function nodeAddWatcher(node/* : Node */, callback, context) {
 		if (node.ready)
 			callback.call(context || this, node.data);
 		else {
@@ -315,7 +319,7 @@ function newNamespace (opts: {tree ?: boolean, global ?: boolean, root ?: Object
 		}
 	}
 	
-	function nodeUnresolvedWatchers(node, base, result) {
+	function nodeUnresolvedWatchers(node/* : Node */, base, result) {
 		node = node || nsRoot;
 		result = result || [];
 		if (!node.ready)
@@ -656,7 +660,7 @@ var rootScope = newScope(null, rootNamespace, rootNamespace, globalNamespace);
 var Public = Helper.extend(rootScope, {
 		
 	guid: "4b6878ee-cb6a-46b3-94ac-27d91f58d666",
-	version: '32.1453754118896',
+	version: '35.1454518325486',
 		
 	upgrade: Attach.upgrade,
 	attach: Attach.attach,
