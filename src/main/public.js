@@ -4,7 +4,7 @@ var rootScope = newScope(null, rootNamespace, rootNamespace, globalNamespace);
 
 var Public = Helper.extend(rootScope, {
 		
-	guid: "4b6878ee-cb6a-46b3-94ac-27d91f58d666",
+	guid: "/* @echo GUID */",
 	version: '/* @echo MAJOR_VERSION */./* @echo MINOR_VERSION */',
 		
 	upgrade: Attach.upgrade,

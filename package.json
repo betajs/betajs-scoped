@@ -1,6 +1,6 @@
 {
 	"name": "betajs-scoped",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"description": "BetaJS-Scoped is a small module for scoped loading of modules and dependencies.",
 	"homepage": "http://betajs.com",
 	"contributors": ["Oliver Friedmann"],
@@ -23,7 +23,8 @@
 	    "grunt-betajs-docs-compile":"",
 		"grunt-babel": "",
 		"babel-plugin-transform-flow-strip-types": "",
-		"grunt-flow-type-check": ""
+		"grunt-flow-type-check": "",
+		"betajs-compile": "betajs/betajs-compile"
 	},
 	"repository": {
 		"type": "git",
@@ -33,6 +34,14 @@
 		"test": "grunt check"
 	},
 	"meta": {
+		"guid": "4b6878ee-cb6a-46b3-94ac-27d91f58d666",
+		"blog": "http://blog.betajs.com",
+		"twitter": "http://twitter.com/thebetajs",
+		"badges": {
+			"codeclimate": true,
+			"travis": true,
+			"npm": true
+		},
 		"status": "Active, Production ready",
 		"compatability": {
 			"Firefox": "4 - Latest",
