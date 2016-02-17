@@ -1,6 +1,7 @@
 module.exports = function(grunt) {
 	var Scoped = require(__dirname + "/../dist/scoped.js");
 	var Path = require("path");
+	
 	grunt.registerMultiTask('scoped', 'Scoped compilation', function() {
 		this.files.forEach(function (fileObj) {
 			var sources = fileObj.orig.src;
@@ -40,4 +41,40 @@ module.exports = function(grunt) {
 			grunt.file.write(dest, result.join("\n"));
 		});
 	});
+	
+	grunt.registerMultiTask('scoped-closure', 'closure', function() {
+		this.files.forEach(function(fileGroup) {
+			var result = [];
+			result.push("(function () {");
+			result.push("var Scoped = this.subScope();");
+			for (var bind in fileGroup.bindings || {})
+				result.push("Scoped.binding('" + bind + "', '" + fileGroup.bindings[bind] + "');");
+			for (var define in fileGroup.defines || {}) {
+				result.push('Scoped.define("' + define + '", function () {');
+				result.push('	return ' + JSON.stringify(fileGroup.defines[define], null, 4) + ';');
+				result.push('});');
+			}
+			for (var module in fileGroup.version_assumptions || {})
+				result.push("Scoped.assumeVersion('" + module + "', " + fileGroup.version_assumptions[module] + ");");
+			
+			if (fileGroup.exports) {
+				result.push("Scoped.require(['" + fileGroup.exports + "'], function (mod) {");
+				result.push("	this.exports(typeof module != 'undefined' ? module : null, mod);");
+				result.push("}, this);");
+			}
+
+			var files = grunt.file.expand({nonull: true}, fileGroup.src);
+			files.forEach(function (filepath) {
+		        if (!grunt.file.exists(filepath)) {
+		            grunt.log.error("Source file '" + filepath + "' not found.");
+		            return "";
+		        }
+		        result.push(grunt.file.read(filepath));
+			});
+			
+			result.push("}).call(Scoped);")
+	        grunt.file.write(fileGroup.dest, result.join("\n"));			
+		});
+	});
+
 };
