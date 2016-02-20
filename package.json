@@ -1,6 +1,6 @@
 {
 	"name": "betajs-scoped",
-	"version": "0.0.8",
+	"version": "0.0.9",
 	"description": "BetaJS-Scoped is a small module for scoped loading of modules and dependencies.",
 	"homepage": "http://betajs.com",
 	"contributors": ["Oliver Friedmann"],

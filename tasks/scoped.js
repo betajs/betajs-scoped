@@ -45,6 +45,8 @@ module.exports = function(grunt) {
 	grunt.registerMultiTask('scoped-closure', 'closure', function() {
 		this.files.forEach(function(fileGroup) {
 			var result = [];
+			if (fileGroup.banner)
+				result.push(fileGroup.banner);
 			result.push("(function () {");
 			result.push("var Scoped = this.subScope();");
 			for (var bind in fileGroup.bindings || {})
