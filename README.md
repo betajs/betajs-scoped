@@ -1,4 +1,4 @@
-# betajs-scoped 0.0.7
+# betajs-scoped 0.0.9
 [![Build Status](https://api.travis-ci.org/betajs/betajs-scoped.svg?branch=master)](https://travis-ci.org/betajs/betajs-scoped)
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-scoped/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-scoped)
 [![npm version](https://img.shields.io/npm/v/betajs-scoped.svg?style=flat)](https://www.npmjs.com/package/betajs-scoped)
@@ -6,8 +6,70 @@
 BetaJS-Scoped is a small module for scoped loading of modules and dependencies.
 
 
-## Status
-Active, Production ready
+
+## Getting Started
+
+
+You can use the library in the browser, in your NodeJS project and compile it as well.
+
+#### Browser
+
+```javascript
+	<script src="betajs-scoped/dist/scoped.min.js"></script>
+``` 
+
+#### NodeJS
+
+```javascript
+	var Scoped = require('betajs-scoped/dist/scoped.js');
+```
+
+#### Compile
+
+```javascript
+	git clone https://github.com/betajs/betajs-scoped.git
+	npm install
+	grunt
+```
+
+
+
+## Basic Usage
+
+
+```javascript
+(function () {
+
+var Scoped = this.subScope();
+
+Scoped.binding("module", "global:MyLibrary");
+Scoped.binding("dependency1", "global:ExternalDependency1");
+Scoped.binding("dependency2", "global:ExternalDependency2");
+
+// Library code
+
+}).call(Scoped);
+```
+
+```javascript
+Scoped.require(['ns1:dependency1', 'ns2:dependency2', 'ns3:dependency3'], function (D1, D2, D3) {
+    // Execute once D1, D2, D3 are resolved.
+});
+
+Scoped.define('ns:module', ['ns1:dependency1', 'ns2:dependency2', 'ns3:dependency3'], function (D1, D2, D3) {
+    // Execute once D1, D2, D3 are resolved.
+    return {
+        // Return ns:module definition.
+    };
+});
+
+Scoped.extend('ns:module', ['ns1:dependency1', 'ns2:dependency2', 'ns3:dependency3'], function (D1, D2, D3) {
+    // Execute once D1, D2, D3 are resolved.
+    return {
+        // Return ns:module extension.
+    };
+});
+```
 
 
 ## Links
@@ -21,7 +83,7 @@ Active, Production ready
 
 
 
-## Compatability (Tested)
+## Compatability
 | Target | Versions |
 | :----- | -------: |
 | Firefox | 4 - Latest |
@@ -57,6 +119,6 @@ Active, Production ready
 
 ## License
 
-Apache 2.0
+Apache-2.0
 
 

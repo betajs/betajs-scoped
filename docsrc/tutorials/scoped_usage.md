@@ -27,7 +27,7 @@ In order to define a subscope, you'd write:
 
 A typical blueprint to structure your own library using Scoped is this:
 
-```
+```javascript
 (function () {
 
 var Scoped = this.subScope();

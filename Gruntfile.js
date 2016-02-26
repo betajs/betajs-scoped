@@ -25,6 +25,7 @@ module.exports = function(grunt) {
     })
     .preprocessrevisionTask(null, 'dist/' + dist + '-raw.js', 'dist/' + dist + '.js')
     .uglifyTask('uglify-scoped', 'dist/' + dist + '.js', 'dist/' + dist + '.min.js')
+    .packageTask()
 
     /* Testing */
     .qunitTask(null, './dist/' + dist + '.js', grunt.file.expand('./tests/**/*.js'))
@@ -50,7 +51,7 @@ module.exports = function(grunt) {
 
 	grunt.initConfig(gruntHelper.config);	
 
-	grunt.registerTask('default', ['readme', 'license', 'codeclimate', 'travis', 'concat-raw', 'preprocessrevision', 'uglify-scoped']);
+	grunt.registerTask('default', ['package', 'readme', 'license', 'codeclimate', 'travis', 'concat-raw', 'preprocessrevision', 'uglify-scoped']);
 	grunt.registerTask('check', ['lint', 'qunit']);
 
 };
