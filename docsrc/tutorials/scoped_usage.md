@@ -1,10 +1,10 @@
 The Scoped system allows you to handle multiple libraries with separate namespaces and scopes.
 
-Scopes in the Scoped system are a tree.
+Scopes in the Scoped system are organized in a tree structure.
 
 Subscopes of a given scope inherit all namespacing definitions.
 
-Given a scope, you can access the following different main namespaces: 
+Given a scope, you can access the following different main pre-defined namespaces: 
 - ``global``: this is the globally accessible namespace in JavaScript; in the browser, this would be ``window``
 - ``root``: the root namespace of the scope in the scope tree
 - ``local``: the namespace local to the current scope
@@ -46,7 +46,11 @@ This closure blueprint makes sure not to clutter the namespace of the rest of th
 One of the benefits of the Scoped system is that you can allow libraries to access external dependencies with different names and even overwrite the namespaces a library attaches to, so you can include two different versions of the same library without clashing their namespaces.
 
 If you want a library to use or attach to different namespaces then its default ones, you need to overwrite them as follows before including the library:
-``Scoped.nextScope().binding("module", "global:MyLibraryAlternateNS");``
+```javascript
+	Scoped.nextScope().binding("module", "global:MyLibraryAlternateNS", {
+	    readonly: true
+	});
+``
 
 Defining dependencies is based on three primitives:
 - ``Scoped.require``: execute code once dependencies are resolved
