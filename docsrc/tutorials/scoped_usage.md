@@ -28,6 +28,7 @@ In order to define a subscope, you'd write:
 A typical blueprint to structure your own library using Scoped is this:
 
 ```javascript
+
 (function () {
 
 var Scoped = this.subScope();
@@ -39,6 +40,7 @@ Scoped.binding("dependency2", "global:ExternalDependency2");
 // Library code
 
 }).call(Scoped);
+
 ```
 
 This closure blueprint makes sure not to clutter the namespace of the rest of the environment.
@@ -46,11 +48,12 @@ This closure blueprint makes sure not to clutter the namespace of the rest of th
 One of the benefits of the Scoped system is that you can allow libraries to access external dependencies with different names and even overwrite the namespaces a library attaches to, so you can include two different versions of the same library without clashing their namespaces.
 
 If you want a library to use or attach to different namespaces then its default ones, you need to overwrite them as follows before including the library:
+
 ```javascript
 	Scoped.nextScope().binding("module", "global:MyLibraryAlternateNS", {
 	    readonly: true
 	});
-``
+```
 
 Defining dependencies is based on three primitives:
 - ``Scoped.require``: execute code once dependencies are resolved

@@ -4,6 +4,7 @@
 	"description": "BetaJS-Scoped is a small module for scoped loading of modules and dependencies.",
 	"contributors": ["Oliver Friedmann"],
 	"devDependencies": {
+    	"lodash": "",
 		"grunt": "",
 		"grunt-preprocess": "",
 		"grunt-git-revision-count": "",
