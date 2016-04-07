@@ -51,6 +51,19 @@ function newScope (parent, parentNS, rootNS, globalNS) {
 						params.push(Helper.stringify(argmts[i]));
 					this.compiled += this.options.ident + "." + name + "(" + params.join(", ") + ");\n\n";
 				}
+				if (this.options.dependencies) {
+					this.dependencies[ns.path] = this.dependencies[ns.path] || {};
+					if (args.dependencies) {
+						args.dependencies.forEach(function (dep) {
+							this.dependencies[ns.path][this.resolve(dep).path] = true;
+						}, this);
+					}
+					if (args.hiddenDependencies) {
+						args.hiddenDependencies.forEach(function (dep) {
+							this.dependencies[ns.path][this.resolve(dep).path] = true;
+						}, this);
+					}
+				}
 				var result = this.options.compile ? {} : args.callback.apply(args.context || this, arguments);
 				callback.call(this, ns, result);
 			}, this);
@@ -72,10 +85,13 @@ function newScope (parent, parentNS, rootNS, globalNS) {
 		options: {
 			lazy: false,
 			ident: "Scoped",
-			compile: false			
+			compile: false,
+			dependencies: false
 		},
 		
 		compiled: "",
+		
+		dependencies: {},
 		
 		nextScope: function () {
 			if (!nextScope)

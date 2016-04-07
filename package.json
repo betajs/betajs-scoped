@@ -15,13 +15,13 @@
         "url": "https://github.com/betajs/betajs-scoped/issues"
     },
     "name": "betajs-scoped",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "description": "BetaJS-Scoped is a small module for scoped loading of modules and dependencies.",
     "contributors": [
         "Oliver Friedmann"
     ],
     "devDependencies": {
-    	"lodash": "",
+        "lodash": "",
         "grunt": "",
         "grunt-preprocess": "",
         "grunt-git-revision-count": "",
