@@ -1,8 +1,22 @@
-var Attach = {
+var Attach = (function () {  
+/** 
+ * This module provides functionality to attach the Scoped system to the environment.
+ * 
+ * @module Attach
+ * @access private
+ */
+return { 
 		
 	__namespace: "Scoped",
 	__revert: null,
 	
+	
+	/**
+	 * Upgrades a pre-existing Scoped system to the newest version present. 
+	 * 
+	 * @param {string} namespace Optional namespace (default is 'Scoped')
+	 * @return {object} the attached Scoped system
+	 */
 	upgrade: function (namespace/* : ?string */) {
 		var current = Globals.get(namespace || Attach.__namespace);
 		if (current && Helper.typeOf(current) == "object" && current.guid == this.guid && Helper.typeOf(current.version) == "string") {
@@ -19,6 +33,13 @@ var Attach = {
 			return this.attach(namespace);		
 	},
 
+
+	/**
+	 * Attaches the Scoped system to the environment. 
+	 * 
+	 * @param {string} namespace Optional namespace (default is 'Scoped')
+	 * @return {object} the attached Scoped system
+	 */
 	attach : function(namespace/* : ?string */) {
 		if (namespace)
 			Attach.__namespace = namespace;
@@ -39,6 +60,13 @@ var Attach = {
 		return this;
 	},
 	
+
+	/**
+	 * Detaches the Scoped system from the environment. 
+	 * 
+	 * @param {boolean} forceDetach Overwrite any attached scoped system by null.
+	 * @return {object} the detached Scoped system
+	 */
 	detach: function (forceDetach/* : ?boolean */) {
 		if (forceDetach)
 			Globals.set(Attach.__namespace, null);
@@ -50,6 +78,15 @@ var Attach = {
 		return this;
 	},
 	
+
+	/**
+	 * Exports an object as a module if possible. 
+	 * 
+	 * @param {object} mod a module object (optional, default is 'module')
+	 * @param {object} object the object to be exported
+	 * @param {boolean} forceExport overwrite potentially pre-existing exports
+	 * @return {object} the Scoped system
+	 */
 	exports: function (mod, object, forceExport) {
 		mod = mod || (typeof module != "undefined" ? module : null);
 		if (typeof mod == "object" && mod && "exports" in mod && (forceExport || mod.exports == this || !mod.exports || Helper.isEmpty(mod.exports)))
@@ -57,4 +94,4 @@ var Attach = {
 		return this;
 	}	
 
-};
+};}).call(this);
