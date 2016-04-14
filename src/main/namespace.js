@@ -161,12 +161,30 @@ function newNamespace (opts/* : {tree ?: boolean, global ?: boolean, root ?: Obj
 		return result;
 	}
 
+	/** 
+	 * The namespace module manages a namespace in the Scoped system.
+	 * 
+	 * @module Namespace
+	 * @access public
+	 */
 	return {
 		
+		/**
+		 * Extend a node in the namespace by an object.
+		 * 
+		 * @param {string} path path to the node in the namespace
+		 * @param {object} value object that should be used for extend the namespace node
+		 */
 		extend: function (path, value) {
 			nodeSetData(nodeNavigate(path), value);
 		},
 		
+		/**
+		 * Set the object value of a node in the namespace.
+		 * 
+		 * @param {string} path path to the node in the namespace
+		 * @param {object} value object that should be used as value for the namespace node
+		 */
 		set: function (path, value) {
 			var node = nodeNavigate(path);
 			if (node.data)
@@ -174,11 +192,25 @@ function newNamespace (opts/* : {tree ?: boolean, global ?: boolean, root ?: Obj
 			nodeSetData(node, value);
 		},
 		
+		/**
+		 * Read the object value of a node in the namespace.
+		 * 
+		 * @param {string} path path to the node in the namespace
+		 * @return {object} object value of the node or null if undefined
+		 */
 		get: function (path) {
 			var node = nodeNavigate(path);
 			return node.ready ? node.data : null;
 		},
 		
+		/**
+		 * Lazily navigate to a node in the namespace.
+		 * Will asynchronously call the callback as soon as the node is being touched.
+		 *
+		 * @param {string} path path to the node in the namespace
+		 * @param {function} callback callback function accepting the node's object value
+		 * @param {context} context optional callback context
+		 */
 		lazy: function (path, callback, context) {
 			var node = nodeNavigate(path);
 			if (node.ready)
@@ -191,14 +223,33 @@ function newNamespace (opts/* : {tree ?: boolean, global ?: boolean, root ?: Obj
 			}
 		},
 		
+		/**
+		 * Digest a node path, checking whether it has been defined by an external system.
+		 * 
+		 * @param {string} path path to the node in the namespace
+		 */
 		digest: function (path) {
 			nodeDigest(nodeNavigate(path));
 		},
 		
+		/**
+		 * Asynchronously access a node in the namespace.
+		 * Will asynchronously call the callback as soon as the node is being defined.
+		 *
+		 * @param {string} path path to the node in the namespace
+		 * @param {function} callback callback function accepting the node's object value
+		 * @param {context} context optional callback context
+		 */
 		obtain: function (path, callback, context) {
 			nodeAddWatcher(nodeNavigate(path), callback, context);
 		},
 		
+		/**
+		 * Returns all unresolved watchers under a certain path.
+		 * 
+		 * @param {string} path path to the node in the namespace
+		 * @return {array} list of all unresolved watchers 
+		 */
 		unresolvedWatchers: function (path) {
 			return nodeUnresolvedWatchers(nodeNavigate(path), path);
 		},
