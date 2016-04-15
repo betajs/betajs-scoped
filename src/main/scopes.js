@@ -77,6 +77,12 @@ function newScope (parent, parentNS, rootNS, globalNS) {
 		return this;
 	};
 	
+	/** 
+	 * This module provides all functionality in a scope.
+	 * 
+	 * @module Scoped
+	 * @access public
+	 */
 	return {
 		
 		getGlobal: Helper.method(Globals, Globals.getPath),
@@ -93,12 +99,23 @@ function newScope (parent, parentNS, rootNS, globalNS) {
 		
 		dependencies: {},
 		
+		
+		/**
+		 * Returns a reference to the next scope that will be obtained by a subScope call.
+		 * 
+		 * @return {object} next scope
+		 */
 		nextScope: function () {
 			if (!nextScope)
 				nextScope = newScope(this, localNamespace, rootNamespace, globalNamespace);
 			return nextScope;
 		},
 		
+		/**
+		 * Creates a sub scope of the current scope and returns it.
+		 * 
+		 * @return {object} sub scope
+		 */
 		subScope: function () {
 			var sub = this.nextScope();
 			childScopes.push(sub);
@@ -106,6 +123,14 @@ function newScope (parent, parentNS, rootNS, globalNS) {
 			return sub;
 		},
 		
+		/**
+		 * Creates a binding within in the scope. 
+		 * 
+		 * @param {string} alias identifier of the new binding
+		 * @param {string} namespaceLocator identifier of an existing namespace path
+		 * @param {object} options options for the binding
+		 * 
+		 */
 		binding: function (alias, namespaceLocator, options) {
 			if (!bindings[alias] || !bindings[alias].readonly) {
 				var ns;
@@ -124,6 +149,14 @@ function newScope (parent, parentNS, rootNS, globalNS) {
 			return this;
 		},
 		
+		
+		/**
+		 * Resolves a name space locator to a name space.
+		 * 
+		 * @param {string} namespaceLocator name space locator
+		 * @return {object} resolved name space
+		 * 
+		 */
 		resolve: function (namespaceLocator) {
 			var parts = namespaceLocator.split(":");
 			if (parts.length == 1) {
@@ -141,7 +174,18 @@ function newScope (parent, parentNS, rootNS, globalNS) {
 				};
 			}
 		},
+
 		
+		/**
+		 * Defines a new name space once a list of name space locators is available.
+		 * 
+		 * @param {string} namespaceLocator the name space that is to be defined
+		 * @param {array} dependencies a list of name space locator dependencies (optional)
+		 * @param {array} hiddenDependencies a list of hidden name space locators (optional)
+		 * @param {function} callback a callback function accepting all dependencies as arguments and returning the new definition
+		 * @param {object} context a callback context (optional)
+		 * 
+		 */
 		define: function () {
 			return custom.call(this, arguments, "define", function (ns, result) {
 				if (ns.namespace.get(ns.path))
@@ -150,22 +194,14 @@ function newScope (parent, parentNS, rootNS, globalNS) {
 			});
 		},
 		
-		assume: function () {
-			var args = Helper.matchArgs(arguments, {
-				assumption: true,
-				dependencies: "array",
-				callback: true,
-				context: "object",
-				error: "string"
-			});
-			var dependencies = args.dependencies || [];
-			dependencies.unshift(args.assumption);
-			this.require(dependencies, function (assumptionValue) {
-				if (!args.callback.apply(args.context || this, arguments))
-					throw ("Scoped Assumption '" + args.assumption + "' failed, value is " + assumptionValue + (args.error ? ", but assuming " + args.error : "")); 
-			});
-		},
 		
+		/**
+		 * Assume a specific version of a module and fail if it is not met.
+		 * 
+		 * @param {string} assumption name space locator
+		 * @param {string} version assumed version
+		 * 
+		 */
 		assumeVersion: function () {
 			var args = Helper.matchArgs(arguments, {
 				assumption: true,
@@ -194,19 +230,33 @@ function newScope (parent, parentNS, rootNS, globalNS) {
 			});
 		},
 		
+		
+		/**
+		 * Extends a potentiall existing name space once a list of name space locators is available.
+		 * 
+		 * @param {string} namespaceLocator the name space that is to be defined
+		 * @param {array} dependencies a list of name space locator dependencies (optional)
+		 * @param {array} hiddenDependencies a list of hidden name space locators (optional)
+		 * @param {function} callback a callback function accepting all dependencies as arguments and returning the new additional definitions.
+		 * @param {object} context a callback context (optional)
+		 * 
+		 */
 		extend: function () {
 			return custom.call(this, arguments, "extend", function (ns, result) {
 				ns.namespace.extend(ns.path, result);
 			});
 		},
+				
 		
-		condition: function () {
-			return custom.call(this, arguments, "condition", function (ns, result) {
-				if (result)
-					ns.namespace.set(ns.path, result);
-			});
-		},
-		
+		/**
+		 * Requires a list of name space locators and calls a function once they are present.
+		 * 
+		 * @param {array} dependencies a list of name space locator dependencies (optional)
+		 * @param {array} hiddenDependencies a list of hidden name space locators (optional)
+		 * @param {function} callback a callback function accepting all dependencies as arguments
+		 * @param {object} context a callback context (optional)
+		 * 
+		 */
 		require: function () {
 			var args = Helper.matchArgs(arguments, {
 				dependencies: "array",
@@ -245,18 +295,36 @@ function newScope (parent, parentNS, rootNS, globalNS) {
 			}
 			return this;
 		},
+
 		
+		/**
+		 * Digest a name space locator, checking whether it has been defined by an external system.
+		 * 
+		 * @param {string} namespaceLocator name space locator
+		 */
 		digest: function (namespaceLocator) {
 			var ns = this.resolve(namespaceLocator);
 			ns.namespace.digest(ns.path);
 			return this;
 		},
 		
+		
+		/**
+		 * Returns all unresolved definitions under a namespace locator
+		 * 
+		 * @param {string} namespaceLocator name space locator, e.g. "global:"
+		 * @return {array} list of all unresolved definitions 
+		 */
 		unresolved: function (namespaceLocator) {
 			var ns = this.resolve(namespaceLocator);
 			return ns.namespace.unresolvedWatchers(ns.path);
 		},
 		
+		/**
+		 * Exports the scope.
+		 * 
+		 * @return {object} exported scope
+		 */
 		__export: function () {
 			return {
 				parentNamespace: parentNamespace.__export(),
@@ -267,6 +335,12 @@ function newScope (parent, parentNS, rootNS, globalNS) {
 			};
 		},
 		
+		/**
+		 * Imports a scope from an exported scope.
+		 * 
+		 * @param {object} data exported scope to be imported
+		 * 
+		 */
 		__import: function (data) {
 			parentNamespace.__import(data.parentNamespace);
 			rootNamespace.__import(data.rootNamespace);
