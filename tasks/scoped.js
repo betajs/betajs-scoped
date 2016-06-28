@@ -4,9 +4,11 @@ module.exports = function(grunt) {
 	
 	grunt.registerMultiTask('scoped', 'Scoped compilation', function() {
 		this.files.forEach(function (fileObj) {
-			var sources = fileObj.orig.src;
+			var sources = fileObj.orig.sources || fileObj.orig.src;
 			var dest = fileObj.dest;
 			var result = [];
+			if (fileObj.orig.include_scoped)
+				result.push(grunt.file.read(__dirname + "/../dist/scoped.js"));
 			var subs = [];
 			var externals = fileObj.externals || [];
 			for (var j = 0; j < externals.length; ++j) {

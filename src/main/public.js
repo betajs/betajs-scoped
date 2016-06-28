@@ -49,4 +49,4 @@ return {
 	
 };
 
-}));
+}).call(this));
