@@ -18,6 +18,8 @@ return {
 			return window[key];
 		if (typeof global !== "undefined")
 			return global[key];
+		if (typeof self !== "undefined")
+			return self[key];
 		return undefined;
 	},
 
@@ -34,6 +36,8 @@ return {
 			window[key] = value;
 		if (typeof global !== "undefined")
 			global[key] = value;
+		if (typeof self !== "undefined")
+			self[key] = value;
 		return value;
 	},
 	

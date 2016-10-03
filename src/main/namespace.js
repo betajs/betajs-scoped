@@ -46,6 +46,10 @@ function newNamespace (opts/* : {tree ?: boolean, global ?: boolean, root ?: Obj
 				if (global)
 					nsRoot.data = global;
 			} catch (e) { }
+			try {
+				if (self)
+					nsRoot.data = self;
+			} catch (e) { }
 		} else
 			nsRoot.data = options.root;
 	}
