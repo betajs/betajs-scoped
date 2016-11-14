@@ -53,6 +53,10 @@
     "meta": {
         "blog": "http://blog.betajs.com",
         "twitter": "http://twitter.com/thebetajs",
+        "sponsors": [
+            "Ziggeo",
+            "Browserstack"
+        ],
         "guid": "4b6878ee-cb6a-46b3-94ac-27d91f58d666",
         "installdoc": "docsrc/common/install.md",
         "summarydoc": "docsrc/common/summary.md",

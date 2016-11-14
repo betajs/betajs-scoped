@@ -112,13 +112,17 @@ Scoped.extend('ns:module', ['ns1:dependency1', 'ns2:dependency2', 'ns3:dependenc
 
 
 
-## Contributors
+## Main Contributors
 
 - Oliver Friedmann
-
 
 ## License
 
 Apache-2.0
+
+
+
+
+
 
 
