@@ -125,4 +125,9 @@ Apache-2.0
 
 
 
+## Sponsors
+
+- Ziggeo
+- Browserstack
+
 

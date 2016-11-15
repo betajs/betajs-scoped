@@ -30,8 +30,7 @@ module.exports = function(grunt) {
     /* Testing */
     .qunitTask(null, './dist/' + dist + '.js', grunt.file.expand('./tests/**/*.js'))
     .closureTask(null, ["./dist/" + dist + ".js"])
-    .browserstackTask(null, 'tests/tests.html', {desktop: true, mobile: false})
-    .browserstackTask(null, 'tests/tests.html', {desktop: false, mobile: true})
+    .browserstackTask(null, 'tests/tests.html', {desktop: true, mobile: true})
     .lintTask(null, ['./src/**/*.js', './dist/' + dist + '.js', './Gruntfile.js', './tests/**/*.js'])
     .flowcheckTask()
     
