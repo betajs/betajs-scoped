@@ -1,7 +1,8 @@
-# betajs-scoped 0.0.12
+# betajs-scoped 0.0.13
 [![Build Status](https://api.travis-ci.org/betajs/betajs-scoped.svg?branch=master)](https://travis-ci.org/betajs/betajs-scoped)
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-scoped/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-scoped)
-[![npm version](https://img.shields.io/npm/v/betajs-scoped.svg?style=flat)](https://www.npmjs.com/package/betajs-scoped)
+[![NPM](https://img.shields.io/npm/v/betajs-scoped.svg?style=flat)](https://www.npmjs.com/package/betajs-scoped)
+
 
 BetaJS-Scoped is a small module for scoped loading of modules and dependencies.
 
@@ -77,23 +78,24 @@ Scoped.extend('ns:module', ['ns1:dependency1', 'ns2:dependency2', 'ns3:dependenc
 | :--------- | --: |
 | Homepage   | [http://betajs.com](http://betajs.com) |
 | Git        | [git://github.com/betajs/betajs-scoped.git](git://github.com/betajs/betajs-scoped.git) |
-| Repository | [http://github.com/betajs/betajs-scoped](http://github.com/betajs/betajs-scoped) |
+| Repository | [https://github.com/betajs/betajs-scoped](https://github.com/betajs/betajs-scoped) |
 | Blog       | [http://blog.betajs.com](http://blog.betajs.com) | 
 | Twitter    | [http://twitter.com/thebetajs](http://twitter.com/thebetajs) | 
+ 
 
 
 
 ## Compatability
 | Target | Versions |
 | :----- | -------: |
-| Firefox | 4 - Latest |
+| Firefox | 3 - Latest |
 | Chrome | 15 - Latest |
 | Safari | 4 - Latest |
 | Opera | 12 - Latest |
 | Internet Explorer | 6 - Latest |
 | Edge | 12 - Latest |
-| iOS | 7.0 - Latest |
-| Android | 4.0 - Latest |
+| iOS | 3.0 - Latest |
+| Android | 2.2 - Latest |
 | NodeJS | 0.10 - Latest |
 
 

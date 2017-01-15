@@ -15,7 +15,7 @@
         "url": "https://github.com/betajs/betajs-scoped/issues"
     },
     "name": "betajs-scoped",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "description": "BetaJS-Scoped is a small module for scoped loading of modules and dependencies.",
     "contributors": [
         "Oliver Friedmann"
@@ -24,7 +24,6 @@
         "lodash": "",
         "grunt": "",
         "grunt-preprocess": "",
-        "grunt-git-revision-count": "",
         "grunt-contrib-concat": "",
         "grunt-contrib-uglify": "",
         "grunt-contrib-clean": "",
@@ -33,20 +32,20 @@
         "grunt-closure-tools": "",
         "qunit": "",
         "js-yaml": "",
-        "grunt-wget": "",
-        "grunt-betajs-docs-compile": "",
+        "grunt-betajs-docs-compile": "~0.0.19",
         "grunt-jsdoc": "",
         "grunt-shell": "",
         "grunt-template": "",
         "grunt-babel": "",
         "babel-plugin-transform-flow-strip-types": "",
         "grunt-flow-type-check": "",
-        "betajs-compile": "betajs/betajs-compile"
+        "betajs-compile": "~0.0.28"
     },
     "repository": {
         "type": "git",
         "url": "git://github.com/betajs/betajs-scoped.git"
     },
+    "main": "dist/scoped.js",
     "scripts": {
         "test": "grunt check"
     },

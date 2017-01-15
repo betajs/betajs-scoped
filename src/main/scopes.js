@@ -214,7 +214,7 @@ function newScope (parent, parentNS, rootNS, globalNS) {
 			dependencies.unshift(args.assumption);
 			this.require(dependencies, function () {
 				var argv = arguments;
-				var assumptionValue = argv[0];
+				var assumptionValue = argv[0].replace(/[^\d\.]/g, "");
 				argv[0] = assumptionValue.split(".");
 				for (var i = 0; i < argv[0].length; ++i)
 					argv[0][i] = parseInt(argv[0][i], 10);
@@ -222,7 +222,7 @@ function newScope (parent, parentNS, rootNS, globalNS) {
 					if (!args.callback.apply(args.context || this, args))
 						throw ("Scoped Assumption '" + args.assumption + "' failed, value is " + assumptionValue + (args.error ? ", but assuming " + args.error : ""));
 				} else {
-					var version = (args.callback + "").split(".");
+					var version = (args.callback + "").replace(/[^\d\.]/g, "").split(".");
 					for (var j = 0; j < Math.min(argv[0].length, version.length); ++j)
 						if (parseInt(version[j], 10) > argv[0][j])
 							throw ("Scoped Version Assumption '" + args.assumption + "' failed, value is " + assumptionValue + ", but assuming at least " + args.callback);

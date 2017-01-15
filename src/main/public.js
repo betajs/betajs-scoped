@@ -14,7 +14,7 @@ var Public = Helper.extend(rootScope, (function () {
 return {
 		
 	guid: "/* @echo GUID */",
-	version: '/* @echo MAJOR_VERSION */./* @echo MINOR_VERSION */',
+	version: '/* @echo VERSION */',
 		
 	upgrade: Attach.upgrade,
 	attach: Attach.attach,

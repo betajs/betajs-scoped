@@ -59,7 +59,7 @@ module.exports = function(grunt) {
 				result.push('});');
 			}
 			for (var module in fileGroup.version_assumptions || {})
-				result.push("Scoped.assumeVersion('" + module + "', " + fileGroup.version_assumptions[module] + ");");
+				result.push("Scoped.assumeVersion('" + module + "', '" + fileGroup.version_assumptions[module] + "');");
 			
 			if (fileGroup.exports) {
 				result.push("Scoped.require(['" + fileGroup.exports + "'], function (mod) {");

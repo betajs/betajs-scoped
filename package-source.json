@@ -1,13 +1,14 @@
 {
 	"name": "betajs-scoped",
-	"version": "0.0.12",
+	"version": "0.0.13",
 	"description": "BetaJS-Scoped is a small module for scoped loading of modules and dependencies.",
-	"contributors": ["Oliver Friedmann"],
+	"contributors": [
+		"Oliver Friedmann"
+	],
 	"devDependencies": {
-    	"lodash": "",
+		"lodash": "",
 		"grunt": "",
 		"grunt-preprocess": "",
-		"grunt-git-revision-count": "",
 		"grunt-contrib-concat": "",
 		"grunt-contrib-uglify": "",
 		"grunt-contrib-clean": "",
@@ -16,25 +17,28 @@
 		"grunt-closure-tools": "",
 		"qunit": "",
 		"js-yaml": "",
-		"grunt-wget": "",
-        "grunt-betajs-docs-compile":"",
+		"grunt-betajs-docs-compile": "~0.0.19",
 		"grunt-jsdoc": "",
 		"grunt-shell": "",
 		"grunt-template": "",
 		"grunt-babel": "",
 		"babel-plugin-transform-flow-strip-types": "",
 		"grunt-flow-type-check": "",
-		"betajs-compile": "betajs/betajs-compile"
+		"betajs-compile": "~0.0.28"
 	},
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/betajs/betajs-scoped.git"
 	},
+	"main": "dist/scoped.js",
 	"scripts": {
 		"test": "grunt check"
 	},
 	"meta": {
-		"sponsors": ["Ziggeo", "Browserstack"],
+		"sponsors": [
+			"Ziggeo",
+			"Browserstack"
+		],
 		"guid": "4b6878ee-cb6a-46b3-94ac-27d91f58d666",
 		"installdoc": "docsrc/common/install.md",
 		"summarydoc": "docsrc/common/summary.md",
@@ -52,7 +56,7 @@
 			"Edge": "12 - Latest",
 			"iOS": "3.0 - Latest",
 			"Android": "2.2 - Latest",
-			"NodeJS": "0.10 - Latest" 
+			"NodeJS": "0.10 - Latest"
 		},
 		"tests": {
 			"Test Suite": "http://rawgit.com/betajs/betajs-scoped/master/tests/tests.html"
@@ -61,5 +65,5 @@
 			"scoped.js": "http://cdn.rawgit.com/betajs/betajs-scoped/master/dist/scoped.js",
 			"scoped.min.js": "http://cdn.rawgit.com/betajs/betajs-scoped/master/dist/scoped.min.js"
 		}
-	} 
+	}
 }

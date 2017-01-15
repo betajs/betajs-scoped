@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
 	var pkg = grunt.file.readJSON('package.json');
-	var gruntHelper = require('betajs-compile/grunt.js');
+	var gruntHelper = require('betajs-compile');
 	var dist = 'scoped';
 
 	gruntHelper.init(pkg, grunt)
@@ -38,9 +38,6 @@ module.exports = function(grunt) {
     .codeclimateTask()
     .travisTask()
     
-    /* Dependencies */
-    .dependenciesTask(null, { github: ['betajs/betajs-scoped/dist/scoped.js'] })
-
     /* Markdown Files */
 	.readmeTask()
     .licenseTask()
