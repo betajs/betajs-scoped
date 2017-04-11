@@ -73,7 +73,12 @@ module.exports = function(grunt) {
 		            grunt.log.error("Source file '" + filepath + "' not found.");
 		            return "";
 		        }
-		        result.push(grunt.file.read(filepath));
+		        var src = grunt.file.read(filepath);
+                if (typeof fileGroup.process === 'function')
+                    src = fileGroup.process(src, filepath);
+                else if (fileGroup.process)
+                    src = grunt.template.process(src, fileGroup.process);
+		        result.push(src);
 			});
 			
 			result.push("}).call(Scoped);")
