@@ -23,7 +23,17 @@ module.exports = function(grunt) {
 					sub.binding(bind, current.bindings[bind], { readonly: true });
 				sub.options.compile = true;
 				sub.options.lazy = !current.full;
-				require(Path.resolve(current.src));
+                console.log("Scoped: Loading " + current.src);
+                var oldScoped = Scoped;
+                if (current.subScope)
+                	global.Scoped = Scoped.subScope();
+                try {
+                    require(Path.resolve(current.src));
+                } catch (e) {
+                	console.log("Scoped: Error " + e);
+				}
+				if (current.subScope)
+					global.Scoped = oldScoped;
 				sub.require(current.require || []);
 				subs.push(sub);
 			}
