@@ -10,7 +10,7 @@
 		"grunt": "",
 		"grunt-preprocess": "",
 		"grunt-contrib-concat": "",
-		"grunt-contrib-uglify": "",
+		"grunt-contrib-uglify": "~2.3.0",
 		"grunt-contrib-clean": "",
 		"grunt-contrib-jshint": "",
 		"grunt-node-qunit": "",
