@@ -1,5 +1,5 @@
-test("basic dependencies", function() {
-	stop();
+QUnit.test("basic dependencies", function(assert) {
+	var done = assert.async();
 	var counter = 0;
 	var S = Scoped.subScope();
 	var o = "";
@@ -41,17 +41,17 @@ test("basic dependencies", function() {
 		};
 	});	
     S.require(["scope:D"], function (D) {
-    	QUnit.equal(o, "ABCDE");
-    	QUnit.equal(D.d, 5 + 2 + 3 + 1);
-    	QUnit.equal(counter, 5);
-    	QUnit.equal(ptr, D);
-    	start();
+        assert.equal(o, "ABCDE");
+        assert.equal(D.d, 5 + 2 + 3 + 1);
+        assert.equal(counter, 5);
+        assert.equal(ptr, D);
+    	done();
     });
 });
 
 
-test("lazy dependencies", function() {
-	stop();
+QUnit.test("lazy dependencies", function(assert) {
+	var done = assert.async();
 	var counter = 0;
 	var S = Scoped.subScope();
 	S.options.lazy = true;
@@ -95,11 +95,11 @@ test("lazy dependencies", function() {
 		};
 	});
     S.require(["scope:D"], function (D) {
-		QUnit.equal(o, "ABCD");
-    	QUnit.equal(D.d, 5 + 2 + 3 + 1);
-    	QUnit.equal(counter, 4);
+        assert.equal(o, "ABCD");
+        assert.equal(D.d, 5 + 2 + 3 + 1);
+        assert.equal(counter, 4);
     	//console.log(S.compiled);
-    	QUnit.equal(ptr, D);
-    	start();
+        assert.equal(ptr, D);
+    	done();
     });
 });

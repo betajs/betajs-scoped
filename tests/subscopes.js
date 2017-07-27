@@ -1,4 +1,4 @@
-test("subscope load order 1", function() {
+QUnit.test("subscope load order 1", function(assert) {
 	var S = Scoped.subScope();
 	var S1 = S.subScope();
 	S1.define("parent:First", function () {
@@ -13,12 +13,12 @@ test("subscope load order 1", function() {
 		};
 	});
 	S.require(["local:Second"], function (Second) {
-		QUnit.equal(Second.second, "secondfirst");
+        assert.equal(Second.second, "secondfirst");
 	});
 });
 
 
-test("subscope load order 2", function() {
+QUnit.test("subscope load order 2", function(assert) {
 	var S = Scoped.subScope();
 	var S2 = S.subScope();
 	S2.define("parent:Common.Second.Inner", ["parent:Common.First.Inner"], function (First) {
@@ -33,6 +33,6 @@ test("subscope load order 2", function() {
 		};
 	});
 	S.require(["local:Common.Second.Inner"], function (Second) {
-		QUnit.equal(Second.second, "secondfirst");
+        assert.equal(Second.second, "secondfirst");
 	});
 });

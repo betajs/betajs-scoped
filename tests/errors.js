@@ -1,25 +1,25 @@
-test("double define", function() {
+QUnit.test("double define", function(assert) {
 	var S = Scoped.subScope();
 	S.define("scope:Foobar", function () {
 		return {};
 	});
-	QUnit.throws(function () {
+    assert.throws(function () {
 		S.define("scope:Foobar", function () {
 			return {};
 		});
 	});
 });
 
-test("access undefined binding", function() {
+QUnit.test("access undefined binding", function(assert) {
 	var S = Scoped.subScope();
 	S.binding("test", "scope:Test");
 	S.require(["test:Foobar"], function () {});
-	QUnit.throws(function () {
+    assert.throws(function () {
 		S.require(["testx:Foobar"], function () {});
 	});
 });
 
-test("version requirement", function () {
+QUnit.test("version requirement", function (assert) {
 	S = Scoped.subScope();
 	S.define("scope:First", function () {
 		return {
@@ -32,7 +32,7 @@ test("version requirement", function () {
 		};
 	});
 	S.assumeVersion("scope:First.version", 42);
-	QUnit.throws(function () {
+    assert.throws(function () {
 		S.assumeVersion("scope:Second.version", 4);
 	});
 });
