@@ -97,7 +97,7 @@ Scoped.extend('ns:module', ['ns1:dependency1', 'ns2:dependency2', 'ns3:dependenc
 | Yandex | Latest |
 | iOS | 3.0 - Latest |
 | Android | 2.2 - Latest |
-| NodeJS | 0.10 - Latest |
+| NodeJS | 4.0 - Latest |
 
 
 ## CDN
