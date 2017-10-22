@@ -15,12 +15,13 @@
         "url": "https://github.com/betajs/betajs-scoped/issues"
     },
     "name": "betajs-scoped",
-    "version": "0.0.16",
+    "version": "0.0.17",
     "description": "BetaJS-Scoped is a small module for scoped loading of modules and dependencies.",
     "contributors": [
         "Oliver Friedmann"
     ],
     "devDependencies": {
+        "betajs-shims": "~0.0.13",
         "lodash": "",
         "grunt": "",
         "grunt-preprocess": "",
@@ -75,6 +76,9 @@
             "iOS": "3.0 - Latest",
             "Android": "2.2 - Latest",
             "NodeJS": "4.0 - Latest"
+        },
+        "weakDependencies": {
+            "betajs-shims": "https://github.com/betajs/betajs-shims"
         },
         "tests": {
             "Test Suite": "http://rawgit.com/betajs/betajs-scoped/master/tests/tests.html"

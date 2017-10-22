@@ -1,4 +1,4 @@
-# betajs-scoped 0.0.16
+# betajs-scoped 0.0.17
 [![Build Status](https://api.travis-ci.org/betajs/betajs-scoped.svg?branch=master)](https://travis-ci.org/betajs/betajs-scoped)
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-scoped/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-scoped)
 [![NPM](https://img.shields.io/npm/v/betajs-scoped.svg?style=flat)](https://www.npmjs.com/package/betajs-scoped)
@@ -113,6 +113,11 @@ Scoped.extend('ns:module', ['ns1:dependency1', 'ns2:dependency2', 'ns3:dependenc
 | Test Suite | [Run](http://rawgit.com/betajs/betajs-scoped/master/tests/tests.html) |
 
 
+
+## Weak Dependencies
+| Name | URL |
+| :----- | -------: |
+| betajs-shims | [Open](https://github.com/betajs/betajs-shims) |
 
 
 ## Main Contributors
