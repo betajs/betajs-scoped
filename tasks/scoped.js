@@ -18,6 +18,7 @@ module.exports = function(grunt) {
 			}
 			for (var i = 0; i < sources.length; ++i) {
 				var sub = Scoped.nextScope();
+				sub.assumeVersion = function () {};
 				var current = sources[i];
 				for (var bind in current.bindings || {})
 					sub.binding(bind, current.bindings[bind], { readonly: true });
@@ -50,6 +51,9 @@ module.exports = function(grunt) {
 				result.push("}).call(Scoped);")
 				
 			}
+			var unresolved = Scoped.unresolved("global:");
+			if (unresolved.length > 0)
+				console.warn("Unresolved", unresolved);
 			grunt.file.write(dest, result.join("\n"));
 		});
 	});

@@ -36,6 +36,7 @@ module.exports = function(grunt) {
     
     /* External Configurations */
     .codeclimateTask()
+	.autoincreasepackageTask(null, "package-source.json")
     .travisTask(null, "4.0")
     
     /* Markdown Files */
@@ -47,7 +48,7 @@ module.exports = function(grunt) {
 
 	grunt.initConfig(gruntHelper.config);	
 
-	grunt.registerTask('default', ['package', 'readme', 'license', 'codeclimate', 'travis', 'concat-raw', 'preprocessrevision', 'uglify-scoped']);
+	grunt.registerTask('default', ['autoincreasepackage', 'package', 'readme', 'license', 'codeclimate', 'travis', 'concat-raw', 'preprocessrevision', 'uglify-scoped']);
 	grunt.registerTask('check', ['lint', 'qunitjs']);
 
 };
