@@ -1,9 +1,15 @@
 module.exports = function(grunt) {
 	var Scoped = require(__dirname + "/../dist/scoped.js");
 	var Path = require("path");
+
+    var compileCounter = 0;
 	
 	grunt.registerMultiTask('scoped', 'Scoped compilation', function() {
 		this.files.forEach(function (fileObj) {
+            compileCounter++;
+			var mapBinding = function (binding) {
+				return binding.replace("global:", "global:Temp" + compileCounter + ".");
+			};
 			var sources = fileObj.orig.sources || fileObj.orig.src;
 			var dest = fileObj.dest;
 			var result = [];
@@ -21,7 +27,7 @@ module.exports = function(grunt) {
 				sub.assumeVersion = function () {};
 				var current = sources[i];
 				for (var bind in current.bindings || {})
-					sub.binding(bind, current.bindings[bind], { readonly: true });
+					sub.binding(bind, mapBinding(current.bindings[bind]), { readonly: true });
 				sub.options.compile = true;
 				sub.options.lazy = !current.full;
                 console.log("Scoped: Loading " + current.src);
@@ -29,7 +35,10 @@ module.exports = function(grunt) {
                 if (current.subScope)
                 	global.Scoped = Scoped.subScope();
                 try {
-                    require(Path.resolve(current.src));
+                	var resolvedPath = Path.resolve(current.src);
+                	delete require.cache[resolvedPath];
+                    require(resolvedPath);
+                    delete require.cache[resolvedPath];
                 } catch (e) {
                 	console.log("Scoped: Error " + e);
 				}

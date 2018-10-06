@@ -1,4 +1,4 @@
-# betajs-scoped 0.0.19
+# betajs-scoped 0.0.20
 [![Build Status](https://api.travis-ci.org/betajs/betajs-scoped.svg?branch=master)](https://travis-ci.org/betajs/betajs-scoped)
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-scoped/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-scoped)
 [![NPM](https://img.shields.io/npm/v/betajs-scoped.svg?style=flat)](https://www.npmjs.com/package/betajs-scoped)
