@@ -1,5 +1,5 @@
 {
-    "homepage": "http://betajs.com",
+    "homepage": "https://betajs.com",
     "license": "Apache-2.0",
     "licenses": [
         {
@@ -15,7 +15,7 @@
         "url": "https://github.com/betajs/betajs-scoped/issues"
     },
     "name": "betajs-scoped",
-    "version": "0.0.20",
+    "version": "0.0.21",
     "description": "BetaJS-Scoped is a small module for scoped loading of modules and dependencies.",
     "contributors": [
         "Oliver Friedmann"
@@ -26,7 +26,7 @@
         "grunt": "",
         "grunt-preprocess": "",
         "grunt-contrib-concat": "",
-        "grunt-contrib-uglify": "~2.3.0",
+        "grunt-contrib-uglify": "^4.0.0",
         "grunt-contrib-clean": "",
         "grunt-contrib-jshint": "",
         "grunt-closure-tools": "",
@@ -47,11 +47,12 @@
     },
     "main": "dist/scoped.js",
     "scripts": {
-        "test": "grunt check"
+        "test": "grunt check",
+        "relink": "npm link betajs-shims && npm link betajs-compile"
     },
     "meta": {
-        "blog": "http://blog.betajs.com",
-        "twitter": "http://twitter.com/thebetajs",
+        "blog": "https://blog.betajs.com",
+        "twitter": "https://twitter.com/thebetajs",
         "sponsors": [
             "Ziggeo",
             "Browserstack"

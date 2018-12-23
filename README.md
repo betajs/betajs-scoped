@@ -1,4 +1,4 @@
-# betajs-scoped 0.0.20
+# betajs-scoped 0.0.21
 [![Build Status](https://api.travis-ci.org/betajs/betajs-scoped.svg?branch=master)](https://travis-ci.org/betajs/betajs-scoped)
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-scoped/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-scoped)
 [![NPM](https://img.shields.io/npm/v/betajs-scoped.svg?style=flat)](https://www.npmjs.com/package/betajs-scoped)
@@ -76,11 +76,11 @@ Scoped.extend('ns:module', ['ns1:dependency1', 'ns2:dependency2', 'ns3:dependenc
 ## Links
 | Resource   | URL |
 | :--------- | --: |
-| Homepage   | [http://betajs.com](http://betajs.com) |
+| Homepage   | [https://betajs.com](https://betajs.com) |
 | Git        | [git://github.com/betajs/betajs-scoped.git](git://github.com/betajs/betajs-scoped.git) |
 | Repository | [https://github.com/betajs/betajs-scoped](https://github.com/betajs/betajs-scoped) |
-| Blog       | [http://blog.betajs.com](http://blog.betajs.com) | 
-| Twitter    | [http://twitter.com/thebetajs](http://twitter.com/thebetajs) | 
+| Blog       | [https://blog.betajs.com](https://blog.betajs.com) | 
+| Twitter    | [https://twitter.com/thebetajs](https://twitter.com/thebetajs) | 
 | Gitter     | [https://gitter.im/betajs/betajs-scoped](https://gitter.im/betajs/betajs-scoped) | 
 
 
@@ -96,7 +96,7 @@ Scoped.extend('ns:module', ['ns1:dependency1', 'ns2:dependency2', 'ns3:dependenc
 | Edge | 12 - Latest |
 | Yandex | Latest |
 | iOS | 3.0 - Latest |
-| Android | 2.2 - Latest |
+| Android | 4.4 - Latest |
 | NodeJS | 4.0 - Latest |
 
 
