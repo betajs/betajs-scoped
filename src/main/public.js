@@ -15,6 +15,8 @@ return {
 		
 	guid: "/* @echo GUID */",
 	version: '/* @echo VERSION */',
+
+	upgradable: true,
 		
 	upgrade: Attach.upgrade,
 	attach: Attach.attach,

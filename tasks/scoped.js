@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
 	var Scoped = require(__dirname + "/../dist/scoped.js");
+	Scoped.upgradable = false;
 	var Path = require("path");
 
     var compileCounter = 0;
