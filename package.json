@@ -37,8 +37,6 @@
         "grunt-shell": "",
         "grunt-template": "",
         "grunt-babel": "",
-        "babel-plugin-transform-flow-strip-types": "",
-        "grunt-flow-type-check": "",
         "betajs-compile": "~0.0.28"
     },
     "repository": {

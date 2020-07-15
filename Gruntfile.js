@@ -18,11 +18,7 @@ module.exports = function(grunt) {
 		'src/main/public.js',
 		'src/main/init.js',
         'src/fragments/end.js-fragment'
-	], 'dist/' + dist + '-raw.js', {
-    	banner: function () {
-    		return "/** @flow **/" + this.banner;
-    	}
-    })
+	], 'dist/' + dist + '-raw.js')
     .preprocessrevisionTask(null, 'dist/' + dist + '-raw.js', 'dist/' + dist + '.js')
     .uglifyTask('uglify-scoped', 'dist/' + dist + '.js', 'dist/' + dist + '.min.js')
     .packageTask()
@@ -32,8 +28,7 @@ module.exports = function(grunt) {
     .closureTask(null, ["./dist/" + dist + ".js"])
     .browserstackTask(null, 'tests/tests.html', {desktop: true, mobile: true})
     .lintTask(null, ['./src/**/*.js', './dist/' + dist + '.js', './Gruntfile.js', './tests/**/*.js'])
-    .flowcheckTask()
-    
+
     /* External Configurations */
     .codeclimateTask()
 	.autoincreasepackageTask(null, "package-source.json")
