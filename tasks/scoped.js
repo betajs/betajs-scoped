@@ -31,6 +31,7 @@ module.exports = function(grunt) {
 					sub.binding(bind, mapBinding(current.bindings[bind]), { readonly: true });
 				sub.options.compile = true;
 				sub.options.lazy = !current.full;
+				sub.options.dependencies = true;
                 console.log("Scoped: Loading " + current.src);
                 var oldScoped = Scoped;
                 if (current.subScope)
@@ -57,6 +58,8 @@ module.exports = function(grunt) {
 				result.push("var Scoped = this.subScope();");
 				for (var bind in source.bindings || {})
 					result.push("Scoped.binding('" + bind + "', '" + source.bindings[bind] + "');");
+				console.log("Scoped: Compiled " + source.src + " " + Math.round(subs[i].compiled.length/1024) + " KB");
+				//console.log(subs[i].dependencies);
 				result.push(subs[i].compiled);
 				result.push("}).call(Scoped);")
 				
